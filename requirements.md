@@ -19,64 +19,86 @@ The expanded lifecycle covers three major phases:
 
 ## 2. Process Flow & Human-in-the-Loop Architecture
 
-[![Process Flow Diagram](https://mermaid.ink/img/pako:eJyFV2tP20gU_StXqQRBCm-0H1C3VUhImzaENA8oXVbVxL5xRrE91swYiCj_fc-MnRBTykZCWM7c1zn3njt5rAUq5Nop1Waxug_mQlsat29Twsfk00iLbE6DuTB8-M9tzT_Q4SmNMhYL1tRNLf43qJuIiGmLRsGcwzyWaXRb-7fw4j5N2K5MmkHAmTUwvZOWcYx2dz_Q2caJjoxjQ5-UimKmjtLJ-6ne_1AfSxsjlNDf5V2DmlNjtQise1K5pQESaNAFitmphD7z7ltw38ytSoTlsMyaztNIplw5_fzU8nZt2F3zFHUBCKR2_uCDGkCirPJ5zbRKNnKouGt7J-ePDjmcRzF5GpJKCT4Nqv94W3t6Pn2O03Rbu2FzW_OGHZd1l_bpMuO0dUUdETC1tMoKQLpGxaiHZnjdoMOTg-yBrNAR2yoEpd--Kt1-ckyCIroQEkgAA01IbpRPE2mLyla0dF6DpuO_-vxTJhE8TbJYiZDupKBoTtI3QqvXPfU5rt88zmTMTzDUnCl6VPcIuu-en_y5Na65Yb0rrBXBPOEUL1rtPk2GvTdZag0OAXFrzsEiUyiJDqneEjGnodD0CRDtFNm0VDqTOqFRrCya9YrTnCsMwFGBVTPLtLrjsESsizpbmh3Y53dIi2S66s9VnIKS7W-5SG2e0AUzkv9F3W53vL3zZvZfftoH65guOxptpIECEnS9DyxYF-kPYnBFY36w5FiU9nM-BYd6EQJOql8IO29QS1phpUrNn4J63uC8iz8fuoTwqArhEdXLJt1EcMh3ku_XQRsFhvDkaPIiUMFzE9mjV5H9iqhdU6LadgDfSzuXacEXy5jUjPqu5GvmxccC5fd_F69GmCax3KmE_PpyiHoO2jB0Hf7uHU2yQCWu94FkoFKLsHtJWIHq64txuag4GMiMoW_8hoPnpx6QufBOhqORE9AhR4zO91PLHO49JDHV-0DUA7Djy9ty1NIgN_OKV_jZ2_3wq6iZ-goqMoD0KEc2jYVZ_KJecRr9eJu-JuFHawk_OqWBMna3wH2sRQqmnaMi-GiZBpXgPV9EH_ZjES8IgxTEecgGFEDOjZnlcbysWPS9xSUsLkA3ebOzWAULcoLpC32Gz2GbCfMbkpfeyQBOXFYtlTiB2vLYrCR0I_m16R8BOF4DcHxKVzJkhV0QsSlLx17gOJaRw-Q8hM8Xa-ybY1DcYwRFYmjIgdKh66X6XpKdFOTVeyoQsZPslNtaovJ1gJ2VqA6LXcfBnJqpiJdGGgzbXBq3YZqjYTlrn0GQpzhD6X7ItsdzkS7oRuXbeGOruXnXIydUsMghGijQuLp6YumWU5stBy6Pwnt7mYpEBtBCwGAa642-5eTHykBmEDJTCTH0IcZ-lYZS7RcAjrVM_ETVO50k46iqOyNvM4HNKqDbXxnONwCgAVbOdAutkWv9Eu8xvph4B1dw4BjB8i6iDrRXov-n_GRN-ckpje_V7si6fQQMx_mUkUPM7sut33v-qhTG46owHlPJcamFG-pYapvjxsBjAXypWZeZwx5mViboB5FkhKOoGejvvFhCx69K5fXzssW4rAoQhib9Xnc0Pm9Xsr_2Nt9hU2wRGlktA9cGJtDSJ7MS08ODA3I3P6SGGxYeUWuDMggdGc4E1Erphj98puKwOLV5AVvfyFBtg1zbNqBPuIpEL5bQd5_TjWsgY2SUujqw1JaxRKfXeS_ao6ODo7-qRjclDSdVGk6ovoLAMeq6aIOJK9ZytqRJ6lyjafwNooLxSYHxCGnsqtmsxPiHG01sIIzmynvRby7TyVmv26rk9sMbNZuemdCpeqlifoutXby8vzSbhZ279PZU5Jw7LdRyirmFdVHDY9FgrJ_QS6t7xZmqjn2zuN82W28tF1_CH5fLxugMvLNvtQbVEkbXyBC_DB5rds6J_40Q8kzksa09Pf0H66S5Cw==)](https://mermaid.live/edit#pako:eJyFV2tP20gU_StXqQRBCm-0H1C3VUhImzaENA8oXVbVxL5xRrE91swYiCj_fc-MnRBTykZCWM7c1zn3njt5rAUq5Nop1Waxug_mQlsat29Twsfk00iLbE6DuTB8-M9tzT_Q4SmNMhYL1tRNLf43qJuIiGmLRsGcwzyWaXRb-7fw4j5N2K5MmkHAmTUwvZOWcYx2dz_Q2caJjoxjQ5-UimKmjtLJ-6ne_1AfSxsjlNDf5V2DmlNjtQise1K5pQESaNAFitmphD7z7ltw38ytSoTlsMyaztNIplw5_fzU8nZt2F3zFHUBCKR2_uCDGkCirPJ5zbRKNnKouGt7J-ePDjmcRzF5GpJKCT4Nqv94W3t6Pn2O03Rbu2FzW_OGHZd1l_bpMuO0dUUdETC1tMoKQLpGxaiHZnjdoMOTg-yBrNAR2yoEpd--Kt1-ckyCIroQEkgAA01IbpRPE2mLyla0dF6DpuO_-vxTJhE8TbJYiZDupKBoTtI3QqvXPfU5rt88zmTMTzDUnCl6VPcIuu-en_y5Na65Yb0rrBXBPOEUL1rtPk2GvTdZag0OAXFrzsEiUyiJDqneEjGnodD0CRDtFNm0VDqTOqFRrCya9YrTnCsMwFGBVTPLtLrjsESsizpbmh3Y53dIi2S66s9VnIKS7W-5SG2e0AUzkv9F3W53vL3zZvZfftoH65guOxptpIECEnS9DyxYF-kPYnBFY36w5FiU9nM-BYd6EQJOql8IO29QS1phpUrNn4J63uC8iz8fuoTwqArhEdXLJt1EcMh3ku_XQRsFhvDkaPIiUMFzE9mjV5H9iqhdU6LadgDfSzuXacEXy5jUjPqu5GvmxccC5fd_F69GmCax3KmE_PpyiHoO2jB0Hf7uHU2yQCWu94FkoFKLsHtJWIHq64txuag4GMiMoW_8hoPnpx6QufBOhqORE9AhR4zO91PLHO49JDHV-0DUA7Djy9ty1NIgN_OKV_jZ2_3wq6iZ-goqMoD0KEc2jYVZ_KJecRr9eJu-JuFHawk_OqWBMna3wH2sRQqmnaMi-GiZBpXgPV9EH_ZjES8IgxTEecgGFEDOjZnlcbysWPS9xSUsLkA3ebOzWAULcoLpC32Gz2GbCfMbkpfeyQBOXFYtlTiB2vLYrCR0I_m16R8BOF4DcHxKVzJkhV0QsSlLx17gOJaRw-Q8hM8Xa-ybY1DcYwRFYmjIgdKh66X6XpKdFOTVeyoQsZPslNtaovJ1gJ2VqA6LXcfBnJqpiJdGGgzbXBq3YZqjYTlrn0GQpzhD6X7ItsdzkS7oRuXbeGOruXnXIydUsMghGijQuLp6YumWU5stBy6Pwnt7mYpEBtBCwGAa642-5eTHykBmEDJTCTH0IcZ-lYZS7RcAjrVM_ETVO50k46iqOyNvM4HNKqDbXxnONwCgAVbOdAutkWv9Eu8xvph4B1dw4BjB8i6iDrRXov-n_GRN-ckpje_V7si6fQQMx_mUkUPM7sut33v-qhTG46owHlPJcamFG-pYapvjxsBjAXypWZeZwx5mViboB5FkhKOoGejvvFhCx69K5fXzssW4rAoQhib9Xnc0Pm9Xsr_2Nt9hU2wRGlktA9cGJtDSJ7MS08ODA3I3P6SGGxYeUWuDMggdGc4E1Erphj98puKwOLV5AVvfyFBtg1zbNqBPuIpEL5bQd5_TjWsgY2SUujqw1JaxRKfXeS_ao6ODo7-qRjclDSdVGk6ovoLAMeq6aIOJK9ZytqRJ6lyjafwNooLxSYHxCGnsqtmsxPiHG01sIIzmynvRby7TyVmv26rk9sMbNZuemdCpeqlifoutXby8vzSbhZ279PZU5Jw7LdRyirmFdVHDY9FgrJ_QS6t7xZmqjn2zuN82W28tF1_CH5fLxugMvLNvtQbVEkbXyBC_DB5rds6J_40Q8kzksa09Pf0H66S5Cw==)  
-*Tip: Click the image above to open the full-screen interactive diagram (zoom/pan), or view the [Vector SVG](https://mermaid.ink/svg/pako:eJyFV2tP20gU_StXqQRBCm-0H1C3VUhImzaENA8oXVbVxL5xRrE91swYiCj_fc-MnRBTykZCWM7c1zn3njt5rAUq5Nop1Waxug_mQlsat29Twsfk00iLbE6DuTB8-M9tzT_Q4SmNMhYL1tRNLf43qJuIiGmLRsGcwzyWaXRb-7fw4j5N2K5MmkHAmTUwvZOWcYx2dz_Q2caJjoxjQ5-UimKmjtLJ-6ne_1AfSxsjlNDf5V2DmlNjtQise1K5pQESaNAFitmphD7z7ltw38ytSoTlsMyaztNIplw5_fzU8nZt2F3zFHUBCKR2_uCDGkCirPJ5zbRKNnKouGt7J-ePDjmcRzF5GpJKCT4Nqv94W3t6Pn2O03Rbu2FzW_OGHZd1l_bpMuO0dUUdETC1tMoKQLpGxaiHZnjdoMOTg-yBrNAR2yoEpd--Kt1-ckyCIroQEkgAA01IbpRPE2mLyla0dF6DpuO_-vxTJhE8TbJYiZDupKBoTtI3QqvXPfU5rt88zmTMTzDUnCl6VPcIuu-en_y5Na65Yb0rrBXBPOEUL1rtPk2GvTdZag0OAXFrzsEiUyiJDqneEjGnodD0CRDtFNm0VDqTOqFRrCya9YrTnCsMwFGBVTPLtLrjsESsizpbmh3Y53dIi2S66s9VnIKS7W-5SG2e0AUzkv9F3W53vL3zZvZfftoH65guOxptpIECEnS9DyxYF-kPYnBFY36w5FiU9nM-BYd6EQJOql8IO29QS1phpUrNn4J63uC8iz8fuoTwqArhEdXLJt1EcMh3ku_XQRsFhvDkaPIiUMFzE9mjV5H9iqhdU6LadgDfSzuXacEXy5jUjPqu5GvmxccC5fd_F69GmCax3KmE_PpyiHoO2jB0Hf7uHU2yQCWu94FkoFKLsHtJWIHq64txuag4GMiMoW_8hoPnpx6QufBOhqORE9AhR4zO91PLHO49JDHV-0DUA7Djy9ty1NIgN_OKV_jZ2_3wq6iZ-goqMoD0KEc2jYVZ_KJecRr9eJu-JuFHawk_OqWBMna3wH2sRQqmnaMi-GiZBpXgPV9EH_ZjES8IgxTEecgGFEDOjZnlcbysWPS9xSUsLkA3ebOzWAULcoLpC32Gz2GbCfMbkpfeyQBOXFYtlTiB2vLYrCR0I_m16R8BOF4DcHxKVzJkhV0QsSlLx17gOJaRw-Q8hM8Xa-ybY1DcYwRFYmjIgdKh66X6XpKdFOTVeyoQsZPslNtaovJ1gJ2VqA6LXcfBnJqpiJdGGgzbXBq3YZqjYTlrn0GQpzhD6X7ItsdzkS7oRuXbeGOruXnXIydUsMghGijQuLp6YumWU5stBy6Pwnt7mYpEBtBCwGAa642-5eTHykBmEDJTCTH0IcZ-lYZS7RcAjrVM_ETVO50k46iqOyNvM4HNKqDbXxnONwCgAVbOdAutkWv9Eu8xvph4B1dw4BjB8i6iDrRXov-n_GRN-ckpje_V7si6fQQMx_mUkUPM7sut33v-qhTG46owHlPJcamFG-pYapvjxsBjAXypWZeZwx5mViboB5FkhKOoGejvvFhCx69K5fXzssW4rAoQhib9Xnc0Pm9Xsr_2Nt9hU2wRGlktA9cGJtDSJ7MS08ODA3I3P6SGGxYeUWuDMggdGc4E1Erphj98puKwOLV5AVvfyFBtg1zbNqBPuIpEL5bQd5_TjWsgY2SUujqw1JaxRKfXeS_ao6ODo7-qRjclDSdVGk6ovoLAMeq6aIOJK9ZytqRJ6lyjafwNooLxSYHxCGnsqtmsxPiHG01sIIzmynvRby7TyVmv26rk9sMbNZuemdCpeqlifoutXby8vzSbhZ279PZU5Jw7LdRyirmFdVHDY9FgrJ_QS6t7xZmqjn2zuN82W28tF1_CH5fLxugMvLNvtQbVEkbXyBC_DB5rds6J_40Q8kzksa09Pf0H66S5Cw==).*
+[![Process Flow Diagram](https://mermaid.ink/img/pako:eJyVWAtv2zgS_isDF40dQE5tx3msb68Lx05aX53UjZ203cthQUsjmbAkCiSVxJf6v--QlF9Z-bYXIIgicr6Z-eZF8aXiiwArHai8ffvCU6478PKQAlT1DBOsdqA6ZQqr3ubdPZOcTWNU1WIrLQRMzq8Jh16FLFboFe-nzJ9HUuRpYJDehPanulpNGE8v5lHZUkpgF0IGKO1qE1u_HE_Xq5nkCZOLnoiFLJMu1if4rDd7GmHzrMVe73FKNrteaYp5insXFfoiDXYNwfDYP1vv0Cg1391wHrLQX28IRaqvWMLjhVlVC6UxqefcgzrLshjr7o0HiqWqrlDycEd0zP9rY9Q8yZ6r5v3yIV0u3759SMNYPPkzJjVM-k7Aj5lSfQwhwJDlsYaQx3GnoM5TWoo5dgoXi3_rTzzQs04re_Z840GnINEzuutPyKOZ7pw2Gv94pSFiGlfwlpA1_LR9ctz4ZS_82fnxSSPcgZ-KOHiNz3zNRVpowDA83XYgaGNwvldDE4_Z-d86QHFLeMrilQo_DMKTtYpG--z85Gw_R6dtJAr_RoXKp9GKI5sTa_jT9ln7_P8KQcGR02CAJctmMJpR5Tb__VCxD9DswDhDNkcJg1TTXw8GCYsQDmDszzDIKdejh8p_HIr56ZLsSqTr-5hpRaKPXCNt63Q6RRjq9fdwsbX1ipxS8EGIKEa4EjL5dSrfva9NuI5JJ5Pf-KMH3Sn5RwDmSeQaRmSJB6aHHDrwIks31lxYRT1S1M21SCjFgsIRuEwjqtNtozZim6eeBegTwFecks9EEll7-WztUESX0MKaGkqRbJm1x56-hbt8MfySJHlKbQ6ID0JXxNFvD5UlyZla2AhdkhA8VL6jeqhY-SvjzwDewecM0949XDEfoSdF5kgbKBHbYqLXHjTbjewZNJMR6n00FRpuRKHgg0kAiixcU7fV9Es-k7XjfJpw7Zx2SLZorUll5F3ZpY9_8CQiwLssFiyAR84gmgG3adQbDjrW6PWbF0pvXJKgxEzAi3gi3e_M89LuWzOfU2OrM62ZP0swpRe9_g3c3Q5_LqC9UZNi0JuhP88EuQhNqPVYjKYzwwdy6tCZ1RNpyGUC41hoyvl7THMsCxHhOQq7WSbFIwYFkQPyuyfRsHT5SGYCT1dJvlLnYlb9krNU5wlcI5IzP2AwGEyqhz_nzb_-0M_a5ERRH5SBkughg00lEUkonTujmGIJZsSBiTLXH_MpxVjOA-IZatdMzzzocc2MPrUvWzZPNrSkZkC_1oiC3NYuuS2oFfm9ze0tPnJ8Wqv3HLuEZCJpu0wZ09uct0o5_0TKB6rgu2-of-J6xlMXUOQxiBBuDAdfEee_Of5__ad7NaZ6ZIvDMs2fXpfh0FAeBKYy3ryBu8wXiakZYphGvCbtR0lQHsBPr-rtegdpxDM0Z4ifQdo8DYm5a4t2Ox6bDn6LEVLx2E6AGBw9JzHUbohxy8yh9fvAJAGMcjVz8KsZtoElyKP6-x-OF7gR1KtG1OqE7eITpuY_YOh2UzaXj5PWepy0OjASStddbCaSDijcAjk7xovU3xkmQ-vPDclPWDwHqkY_zgNUFCYaLUqFeRwv9mTpjZX9TLLXlBxgAS5i4c_BtGrr_YZcw3zG1H6eP1u0EaEZQ3siMY3wwDK36t1b_pSRuZee4zU9xx245wEKGlERqoIYGlcYxzwyjF0GBP9q4H4xoWZPVNUsUXBLx0sZmDSsHSVZ20W5NhQ-nUtoXqTYl5zYWCvYrXGXPm4soz-DLlm_UFxR_c64MpOvO74tyvcjBdKmQkZ82LqtTmYsncN3kVfpjS4n8ovVMTZ9kURz4oh8VsbVIVuY6dlHjVbGqekvUjrq-tSBiRnlrY8jB6bJae7zjPqmKtd1a3VN7PQPuHjnyJ3QId4Wau3qKskw2tNkx1b4joRXJpgJm5GgRywrItRgHFBO5VK6oJSgTGjHnUW6JyQTPzqBODtG0jbAkvTdmyrtdaq0OzB5EvWxNjOTGJ_kUySzYjSLB3-tpPuiMx_vduZjKHKjaMZb7bnoqiaSihBddIpu-TkzXpKY5gnlEUsyoK1EA4WotHeS4tJe_XVzLqAKXPnBFNzdDAfjyWW_nNWvVvgbCbsBB2MtuW9yR_mSW-NWbb3ZaID5piFT6ShJj-S7Bxm1WFCYMWqPQnp28wUdiN2u7ZPm-uhJ3ntgkt6jLkjnqWjvfPxmrftu0k4pHqXGNZq8i5hTxdTwKDqCVqN1uifvvheRau9Gqg21FT0m6Cb3toJ1b77yFnCXGh2UYfYgVBaGtgvDmMyqizAswvC7KXmaklTyKyUuR43ldxfDQa_c1t-tdLdroxiYSVM0UTty11h7j2XdrgMwXwJDERl1pidLPqXGQDDOuReXnCiXlIerc9KF2NNguu7M3-39rxFovfuZEbhViiOL--UhrXhQSWgX40GlAy8Ve8NhbkPMrYdZ3L3ysHtWlx2V1WWH2b265zCyxTe1xXZXHK_ebt9flC-try7ssvvk21reurWwG9xXu9mwvrB49X5z0WAWfuaiobJcLv8E-NumUQ==?bgColor=white)](https://mermaid.live/edit#pako:eJyVWAtv2zgS_isDF40dQE5tx3msb68Lx05aX53UjZ203cthQUsjmbAkCiSVxJf6v--QlF9Z-bYXIIgicr6Z-eZF8aXiiwArHai8ffvCU6478PKQAlT1DBOsdqA6ZQqr3ubdPZOcTWNU1WIrLQRMzq8Jh16FLFboFe-nzJ9HUuRpYJDehPanulpNGE8v5lHZUkpgF0IGKO1qE1u_HE_Xq5nkCZOLnoiFLJMu1if4rDd7GmHzrMVe73FKNrteaYp5insXFfoiDXYNwfDYP1vv0Cg1391wHrLQX28IRaqvWMLjhVlVC6UxqefcgzrLshjr7o0HiqWqrlDycEd0zP9rY9Q8yZ6r5v3yIV0u3759SMNYPPkzJjVM-k7Aj5lSfQwhwJDlsYaQx3GnoM5TWoo5dgoXi3_rTzzQs04re_Z840GnINEzuutPyKOZ7pw2Gv94pSFiGlfwlpA1_LR9ctz4ZS_82fnxSSPcgZ-KOHiNz3zNRVpowDA83XYgaGNwvldDE4_Z-d86QHFLeMrilQo_DMKTtYpG--z85Gw_R6dtJAr_RoXKp9GKI5sTa_jT9ln7_P8KQcGR02CAJctmMJpR5Tb__VCxD9DswDhDNkcJg1TTXw8GCYsQDmDszzDIKdejh8p_HIr56ZLsSqTr-5hpRaKPXCNt63Q6RRjq9fdwsbX1ipxS8EGIKEa4EjL5dSrfva9NuI5JJ5Pf-KMH3Sn5RwDmSeQaRmSJB6aHHDrwIks31lxYRT1S1M21SCjFgsIRuEwjqtNtozZim6eeBegTwFecks9EEll7-WztUESX0MKaGkqRbJm1x56-hbt8MfySJHlKbQ6ID0JXxNFvD5UlyZla2AhdkhA8VL6jeqhY-SvjzwDewecM0949XDEfoSdF5kgbKBHbYqLXHjTbjewZNJMR6n00FRpuRKHgg0kAiixcU7fV9Es-k7XjfJpw7Zx2SLZorUll5F3ZpY9_8CQiwLssFiyAR84gmgG3adQbDjrW6PWbF0pvXJKgxEzAi3gi3e_M89LuWzOfU2OrM62ZP0swpRe9_g3c3Q5_LqC9UZNi0JuhP88EuQhNqPVYjKYzwwdy6tCZ1RNpyGUC41hoyvl7THMsCxHhOQq7WSbFIwYFkQPyuyfRsHT5SGYCT1dJvlLnYlb9krNU5wlcI5IzP2AwGEyqhz_nzb_-0M_a5ERRH5SBkughg00lEUkonTujmGIJZsSBiTLXH_MpxVjOA-IZatdMzzzocc2MPrUvWzZPNrSkZkC_1oiC3NYuuS2oFfm9ze0tPnJ8Wqv3HLuEZCJpu0wZ09uct0o5_0TKB6rgu2-of-J6xlMXUOQxiBBuDAdfEee_Of5__ad7NaZ6ZIvDMs2fXpfh0FAeBKYy3ryBu8wXiakZYphGvCbtR0lQHsBPr-rtegdpxDM0Z4ifQdo8DYm5a4t2Ox6bDn6LEVLx2E6AGBw9JzHUbohxy8yh9fvAJAGMcjVz8KsZtoElyKP6-x-OF7gR1KtG1OqE7eITpuY_YOh2UzaXj5PWepy0OjASStddbCaSDijcAjk7xovU3xkmQ-vPDclPWDwHqkY_zgNUFCYaLUqFeRwv9mTpjZX9TLLXlBxgAS5i4c_BtGrr_YZcw3zG1H6eP1u0EaEZQ3siMY3wwDK36t1b_pSRuZee4zU9xx245wEKGlERqoIYGlcYxzwyjF0GBP9q4H4xoWZPVNUsUXBLx0sZmDSsHSVZ20W5NhQ-nUtoXqTYl5zYWCvYrXGXPm4soz-DLlm_UFxR_c64MpOvO74tyvcjBdKmQkZ82LqtTmYsncN3kVfpjS4n8ovVMTZ9kURz4oh8VsbVIVuY6dlHjVbGqekvUjrq-tSBiRnlrY8jB6bJae7zjPqmKtd1a3VN7PQPuHjnyJ3QId4Wau3qKskw2tNkx1b4joRXJpgJm5GgRywrItRgHFBO5VK6oJSgTGjHnUW6JyQTPzqBODtG0jbAkvTdmyrtdaq0OzB5EvWxNjOTGJ_kUySzYjSLB3-tpPuiMx_vduZjKHKjaMZb7bnoqiaSihBddIpu-TkzXpKY5gnlEUsyoK1EA4WotHeS4tJe_XVzLqAKXPnBFNzdDAfjyWW_nNWvVvgbCbsBB2MtuW9yR_mSW-NWbb3ZaID5piFT6ShJj-S7Bxm1WFCYMWqPQnp28wUdiN2u7ZPm-uhJ3ntgkt6jLkjnqWjvfPxmrftu0k4pHqXGNZq8i5hTxdTwKDqCVqN1uifvvheRau9Gqg21FT0m6Cb3toJ1b77yFnCXGh2UYfYgVBaGtgvDmMyqizAswvC7KXmaklTyKyUuR43ldxfDQa_c1t-tdLdroxiYSVM0UTty11h7j2XdrgMwXwJDERl1pidLPqXGQDDOuReXnCiXlIerc9KF2NNguu7M3-39rxFovfuZEbhViiOL--UhrXhQSWgX40GlAy8Ve8NhbkPMrYdZ3L3ysHtWlx2V1WWH2b265zCyxTe1xXZXHK_ebt9flC-try7ssvvk21reurWwG9xXu9mwvrB49X5z0WAWfuaiobJcLv8E-NumUQ==)  
+*Tip: Click the image above to open the full-screen interactive diagram (zoom/pan), or view the [Vector SVG (High Contrast)](https://mermaid.ink/svg/pako:eJyVWAtv2zgS_isDF40dQE5tx3msb68Lx05aX53UjZ203cthQUsjmbAkCiSVxJf6v--QlF9Z-bYXIIgicr6Z-eZF8aXiiwArHai8ffvCU6478PKQAlT1DBOsdqA6ZQqr3ubdPZOcTWNU1WIrLQRMzq8Jh16FLFboFe-nzJ9HUuRpYJDehPanulpNGE8v5lHZUkpgF0IGKO1qE1u_HE_Xq5nkCZOLnoiFLJMu1if4rDd7GmHzrMVe73FKNrteaYp5insXFfoiDXYNwfDYP1vv0Cg1391wHrLQX28IRaqvWMLjhVlVC6UxqefcgzrLshjr7o0HiqWqrlDycEd0zP9rY9Q8yZ6r5v3yIV0u3759SMNYPPkzJjVM-k7Aj5lSfQwhwJDlsYaQx3GnoM5TWoo5dgoXi3_rTzzQs04re_Z840GnINEzuutPyKOZ7pw2Gv94pSFiGlfwlpA1_LR9ctz4ZS_82fnxSSPcgZ-KOHiNz3zNRVpowDA83XYgaGNwvldDE4_Z-d86QHFLeMrilQo_DMKTtYpG--z85Gw_R6dtJAr_RoXKp9GKI5sTa_jT9ln7_P8KQcGR02CAJctmMJpR5Tb__VCxD9DswDhDNkcJg1TTXw8GCYsQDmDszzDIKdejh8p_HIr56ZLsSqTr-5hpRaKPXCNt63Q6RRjq9fdwsbX1ipxS8EGIKEa4EjL5dSrfva9NuI5JJ5Pf-KMH3Sn5RwDmSeQaRmSJB6aHHDrwIks31lxYRT1S1M21SCjFgsIRuEwjqtNtozZim6eeBegTwFecks9EEll7-WztUESX0MKaGkqRbJm1x56-hbt8MfySJHlKbQ6ID0JXxNFvD5UlyZla2AhdkhA8VL6jeqhY-SvjzwDewecM0949XDEfoSdF5kgbKBHbYqLXHjTbjewZNJMR6n00FRpuRKHgg0kAiixcU7fV9Es-k7XjfJpw7Zx2SLZorUll5F3ZpY9_8CQiwLssFiyAR84gmgG3adQbDjrW6PWbF0pvXJKgxEzAi3gi3e_M89LuWzOfU2OrM62ZP0swpRe9_g3c3Q5_LqC9UZNi0JuhP88EuQhNqPVYjKYzwwdy6tCZ1RNpyGUC41hoyvl7THMsCxHhOQq7WSbFIwYFkQPyuyfRsHT5SGYCT1dJvlLnYlb9krNU5wlcI5IzP2AwGEyqhz_nzb_-0M_a5ERRH5SBkughg00lEUkonTujmGIJZsSBiTLXH_MpxVjOA-IZatdMzzzocc2MPrUvWzZPNrSkZkC_1oiC3NYuuS2oFfm9ze0tPnJ8Wqv3HLuEZCJpu0wZ09uct0o5_0TKB6rgu2-of-J6xlMXUOQxiBBuDAdfEee_Of5__ad7NaZ6ZIvDMs2fXpfh0FAeBKYy3ryBu8wXiakZYphGvCbtR0lQHsBPr-rtegdpxDM0Z4ifQdo8DYm5a4t2Ox6bDn6LEVLx2E6AGBw9JzHUbohxy8yh9fvAJAGMcjVz8KsZtoElyKP6-x-OF7gR1KtG1OqE7eITpuY_YOh2UzaXj5PWepy0OjASStddbCaSDijcAjk7xovU3xkmQ-vPDclPWDwHqkY_zgNUFCYaLUqFeRwv9mTpjZX9TLLXlBxgAS5i4c_BtGrr_YZcw3zG1H6eP1u0EaEZQ3siMY3wwDK36t1b_pSRuZee4zU9xx245wEKGlERqoIYGlcYxzwyjF0GBP9q4H4xoWZPVNUsUXBLx0sZmDSsHSVZ20W5NhQ-nUtoXqTYl5zYWCvYrXGXPm4soz-DLlm_UFxR_c64MpOvO74tyvcjBdKmQkZ82LqtTmYsncN3kVfpjS4n8ovVMTZ9kURz4oh8VsbVIVuY6dlHjVbGqekvUjrq-tSBiRnlrY8jB6bJae7zjPqmKtd1a3VN7PQPuHjnyJ3QId4Wau3qKskw2tNkx1b4joRXJpgJm5GgRywrItRgHFBO5VK6oJSgTGjHnUW6JyQTPzqBODtG0jbAkvTdmyrtdaq0OzB5EvWxNjOTGJ_kUySzYjSLB3-tpPuiMx_vduZjKHKjaMZb7bnoqiaSihBddIpu-TkzXpKY5gnlEUsyoK1EA4WotHeS4tJe_XVzLqAKXPnBFNzdDAfjyWW_nNWvVvgbCbsBB2MtuW9yR_mSW-NWbb3ZaID5piFT6ShJj-S7Bxm1WFCYMWqPQnp28wUdiN2u7ZPm-uhJ3ntgkt6jLkjnqWjvfPxmrftu0k4pHqXGNZq8i5hTxdTwKDqCVqN1uifvvheRau9Gqg21FT0m6Cb3toJ1b77yFnCXGh2UYfYgVBaGtgvDmMyqizAswvC7KXmaklTyKyUuR43ldxfDQa_c1t-tdLdroxiYSVM0UTty11h7j2XdrgMwXwJDERl1pidLPqXGQDDOuReXnCiXlIerc9KF2NNguu7M3-39rxFovfuZEbhViiOL--UhrXhQSWgX40GlAy8Ve8NhbkPMrYdZ3L3ysHtWlx2V1WWH2b265zCyxTe1xXZXHK_ebt9flC-try7ssvvk21reurWwG9xXu9mwvrB49X5z0WAWfuaiobJcLv8E-NumUQ==?bgColor=white).*
 
 <details>
 <summary><b>Click to view raw Mermaid code</b></summary>
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'darkMode': false,
+    'background': '#ffffff',
+    'mainBkg': '#ffffff',
+    'nodeBorder': '#1e293b',
+    'primaryColor': '#ffffff',
+    'primaryTextColor': '#0f172a',
+    'primaryBorderColor': '#1e293b',
+    'lineColor': '#1e293b',
+    'secondaryColor': '#fef3c7',
+    'tertiaryColor': '#f8fafc',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '15px'
+  }
+}}%%
 flowchart TD
+    classDef default fill:#ffffff,stroke:#1e293b,stroke-width:2px,color:#0f172a,font-weight:600;
+    classDef gate fill:#fef3c7,stroke:#b45309,stroke-width:2px,color:#78350f,font-weight:bold;
+    classDef action fill:#eff6ff,stroke:#1d4ed8,stroke-width:2px,color:#1e3a8a,font-weight:600;
+    classDef terminal fill:#ecfdf5,stroke:#047857,stroke-width:2px,color:#064e3b,font-weight:600;
+
     subgraph Phase1["Phase 1: Speaker Intake, Image & Scheduling"]
-        A["Speaker Accepts Invite"] --> B["Speaker Fills Google Form<br/>(Title, arXiv, Abstract, About Page, Mode)"]
-        B --> C["Automated Intake Engine"]
+        A["Speaker Accepts Invite"]:::action --> B["Speaker Fills Google Form<br/>(Title, arXiv, Abstract, About Page, Mode)"]:::default
+        B --> C["Automated Intake Engine"]:::action
         
-        C --> D["Web Scraper Extracts Photo<br/>from About Page"]
-        D --> E{"Photo Found on Website?"}
-        E -- "Yes" --> F["AI / OpenCV Face Crop<br/>(Isolate face, 140px target)"]
-        E -- "No" --> G["Ping Maintainer to Submit Photo"] --> F
+        C --> D["Web Scraper Extracts Photo<br/>from About Page"]:::default
+        D --> E{"Photo Found on Website?"}:::gate
+        E -- "Yes" --> F["AI / OpenCV Face Crop<br/>(Isolate face, 140px target)"]:::default
+        E -- "No" --> G["Ping Maintainer to Submit Photo"]:::gate --> F
         
-        F --> H_img["Upload via gh image CLI:<br/>gh image {file} --repo {owner/repo}<br/>Extracts user-attachments CDN URL"]
+        F --> H_img["Upload via gh image CLI:<br/>gh image {file} --repo {owner/repo}<br/>Extracts user-attachments CDN URL"]:::action
         
-        C --> CP1{"Checkpoint 1 (Calendar Gate):<br/>Confirm Slot & Venue"}
-        CP1 -- "Approved" --> I["Create Event in Google Calendar<br/>('Quantum Meets | IIIT')"]
+        C --> CP1{"Checkpoint 1 (Calendar Gate):<br/>Confirm Slot & Venue"}:::gate
+        CP1 -- "Approved" --> I["Create Event in Google Calendar<br/>('Quantum Meets | IIIT')"]:::action
         
-        C --> J_txt["Abstract Parser & Formatter:<br/>Plain Text -> GitHub Markdown (Math, Citations)"]
+        C --> J_txt["Abstract Parser & Formatter:<br/>Plain Text -> GitHub Markdown (Math, Citations)"]:::default
         
-        H_img & I & J_txt --> CP2{"Checkpoint 2 (Website Gate):<br/>Review Markdown, Venue & CDN Image"}
+        H_img & I & J_txt --> CP2{"Checkpoint 2 (Website Gate):<br/>Review Markdown, Venue & CDN Image"}:::gate
         
-        CP2 -- "Approved" --> K{"Is Event Date within<br/>Ceil of Next Week?<br/>(<= Next Sunday)"}
-        K -- "Yes" --> L["Add to ## Upcoming in content.md"]
-        K -- "No" --> M["Add to ## Pipeline in content.md"]
+        CP2 -- "Approved" --> K{"Is Event Date within<br/>Ceil of Next Week?<br/>(<= Next Sunday)"}:::gate
+        K -- "Yes" --> L["Add to ## Upcoming in content.md"]:::action
+        K -- "No" --> M["Add to ## Pipeline in content.md"]:::action
         
-        L & M --> RSS1["Regenerate feed.xml (New Event)<br/>& Git Push"]
+        L & M --> RSS1["Regenerate feed.xml (New Event)<br/>& Git Push"]:::terminal
         M -.->|Sunday Noon Promotion Task| L
     end
 
     subgraph Phase2["Phase 2: Post-Event Transition & Git Sync"]
-        L --> N["Talk Concludes Successfully"]
-        N --> O["Move Talk Block from<br/>content.md to past.md"]
-        O --> P["Git Commit & Push Website Transition"]
+        L --> N["Talk Concludes Successfully"]:::default
+        N --> O["Move Talk Block from<br/>content.md to past.md"]:::action
+        O --> P["Git Commit & Push Website Transition"]:::terminal
     end
 
     subgraph Phase3["Phase 3: Video Ingestion & Intelligent Editing"]
-        Q["Raw Teams Recording (.mp4)<br/>(Local / OneDrive Ingestion)"] --> R["Speech Analysis (Whisper ASR):<br/>Host Prompt Cue & 'Thank You' Cut"]
-        Q --> S["Computer Vision Layout Detection:<br/>Dynamic Slides, Speaker & Participants"]
-        R --> T["Audio/Video Trimming (FFmpeg)"]
-        S --> U["Dynamic Cropping, Rescaling & Blurring"]
-        T & U --> V["Edited Video Preview"]
+        Q["Raw Teams Recording (.mp4)<br/>(Local / OneDrive Ingestion)"]:::default --> R["Speech Analysis (Whisper ASR):<br/>Host Prompt Cue & 'Thank You' Cut"]:::action
+        Q --> S["Computer Vision Layout Detection:<br/>Dynamic Slides, Speaker & Participants"]:::action
+        R --> T["Audio/Video Trimming (FFmpeg)"]:::action
+        S --> U["Dynamic Cropping, Rescaling & Blurring"]:::action
+        T & U --> V["Edited Video Preview"]:::default
     end
 
     subgraph Phase4["Phase 4: Two-Stage YouTube Release & Sync"]
-        V --> CP3{"Checkpoint 3 (Local Review Gate):<br/>Approve Cuts & Layout?<br/>(Optional timestamp overrides)"}
-        CP3 -- "Approved" --> W["Upload to YouTube as UNLISTED"]
-        W --> X["Format Strict Description<br/>(<=100 char title check, pipe separator,<br/>Bold title, Abstract, arXiv, About, Host, No tags)"]
-        X --> Y["Assign to Playlist (e.g. 2026)"]
-        Y --> CP4{"Checkpoint 4 (YouTube Staging Gate):<br/>Verify Unlisted URL"}
-        CP4 -- "Sign-off" --> Z["Switch YouTube Video to PUBLIC"]
-        Z --> AA["Update past.md with YouTube URL"]
-        AA --> AB["Log to contribute.md:<br/>{Reviewer} & Quantum Bot"]
-        AB --> AC["Regenerate feed.xml (New Video)<br/>& Git Push"]
+        V --> CP3{"Checkpoint 3 (Local Review Gate):<br/>Approve Cuts & Layout?<br/>(Optional timestamp overrides)"}:::gate
+        CP3 -- "Approved" --> W["Upload to YouTube as UNLISTED"]:::action
+        W --> X["Format Strict Description<br/>(<=100 char title check, pipe separator,<br/>Bold title, Abstract, arXiv, About, Host, No tags)"]:::default
+        X --> Y["Assign to Playlist (e.g. 2026)"]:::action
+        Y --> CP4{"Checkpoint 4 (YouTube Staging Gate):<br/>Verify Unlisted URL"}:::gate
+        CP4 -- "Sign-off" --> Z["Switch YouTube Video to PUBLIC"]:::action
+        Z --> AA["Update past.md with YouTube URL"]:::action
+        AA --> AB["Log to contribute.md:<br/>{Reviewer} & Quantum Bot"]:::action
+        AB --> AC["Regenerate feed.xml (New Video)<br/>& Git Push"]:::terminal
     end
 
     P --> Q

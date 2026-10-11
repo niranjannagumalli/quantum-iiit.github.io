@@ -1,7 +1,7 @@
 # System Requirements Document (SRD)
 ## Quantum Meets Automated Seminar Pipeline
 
-**Document Status:** Approved & Updated (v1.4)  
+**Document Status:** Approved & Updated (v1.5)  
 **Target Repository:** `quantum-iiit.github.io`  
 
 ---
@@ -11,13 +11,19 @@
 The **Quantum Meets Automated Seminar Pipeline** is an end-to-end automation and orchestration system designed to streamline the complete lifecycle of scientific talks for the Quantum Meets seminar series.
 
 The expanded lifecycle covers three major phases:
-1. **Intake & Scheduling:** Ingesting speaker submissions from Google Forms, scraping and face-cropping portrait images from the speaker's website, formatting for GitHub CDN hosting via the `gh image` CLI extension, formatting plain-text abstracts to Markdown, validating through human checkpoints, creating Google Calendar events, and publishing to either `Upcoming` or `Pipeline` sections on `content.md` with online/offline venue resolution.
-2. **Post-Event Archival & Lifecycle:** Promoting talks from `Pipeline` to `Upcoming` by Sunday noon IST, moving finished talks from `Upcoming` to `past.md`, and managing reschedules or cancellations.
-3. **Video Processing & YouTube Publishing:** Editing Microsoft Teams recordings (dynamic slide crop, speaker top-right anchoring, participant blurring, speech-based intro/outro cutoff), local review gating, unlisted YouTube upload, strict metadata formatting, playlist categorization, public release sign-off, RSS generation, and dual-credit logging in `contribute.md`.
+1. **Intake, Image & Scheduling:** Ingesting speaker submissions from Google Forms, scraping and face-cropping portrait images from the speaker's website, formatting for GitHub CDN hosting via the `gh image` CLI extension, formatting plain-text abstracts to Markdown, validating through human checkpoints, creating Google Calendar events, publishing to either `Upcoming` or `Pipeline` sections on `content.md`, and **immediately syndicating via RSS (`feed.xml`)**.
+2. **Post-Event Archival & Lifecycle:** Promoting talks from `Pipeline` to `Upcoming` by Sunday noon IST (with RSS update), moving finished talks from `Upcoming` to `past.md`, and managing reschedules or cancellations.
+3. **Video Processing & YouTube Publishing:** Editing Microsoft Teams recordings (dynamic slide crop, speaker top-right anchoring, participant blurring, speech-based intro/outro cutoff), local review gating, unlisted YouTube upload, strict metadata formatting, playlist categorization, public release sign-off, **RSS update with YouTube recording**, and dual-credit logging in `contribute.md`.
 
 ---
 
 ## 2. Process Flow & Human-in-the-Loop Architecture
+
+[![Process Flow Diagram](https://mermaid.ink/img/pako:eJyFV2tP20gU_StXqQRBCm-0H1C3VUhImzaENA8oXVbVxL5xRrE91swYiCj_fc-MnRBTykZCWM7c1zn3njt5rAUq5Nop1Waxug_mQlsat29Twsfk00iLbE6DuTB8-M9tzT_Q4SmNMhYL1tRNLf43qJuIiGmLRsGcwzyWaXRb-7fw4j5N2K5MmkHAmTUwvZOWcYx2dz_Q2caJjoxjQ5-UimKmjtLJ-6ne_1AfSxsjlNDf5V2DmlNjtQise1K5pQESaNAFitmphD7z7ltw38ytSoTlsMyaztNIplw5_fzU8nZt2F3zFHUBCKR2_uCDGkCirPJ5zbRKNnKouGt7J-ePDjmcRzF5GpJKCT4Nqv94W3t6Pn2O03Rbu2FzW_OGHZd1l_bpMuO0dUUdETC1tMoKQLpGxaiHZnjdoMOTg-yBrNAR2yoEpd--Kt1-ckyCIroQEkgAA01IbpRPE2mLyla0dF6DpuO_-vxTJhE8TbJYiZDupKBoTtI3QqvXPfU5rt88zmTMTzDUnCl6VPcIuu-en_y5Na65Yb0rrBXBPOEUL1rtPk2GvTdZag0OAXFrzsEiUyiJDqneEjGnodD0CRDtFNm0VDqTOqFRrCya9YrTnCsMwFGBVTPLtLrjsESsizpbmh3Y53dIi2S66s9VnIKS7W-5SG2e0AUzkv9F3W53vL3zZvZfftoH65guOxptpIECEnS9DyxYF-kPYnBFY36w5FiU9nM-BYd6EQJOql8IO29QS1phpUrNn4J63uC8iz8fuoTwqArhEdXLJt1EcMh3ku_XQRsFhvDkaPIiUMFzE9mjV5H9iqhdU6LadgDfSzuXacEXy5jUjPqu5GvmxccC5fd_F69GmCax3KmE_PpyiHoO2jB0Hf7uHU2yQCWu94FkoFKLsHtJWIHq64txuag4GMiMoW_8hoPnpx6QufBOhqORE9AhR4zO91PLHO49JDHV-0DUA7Djy9ty1NIgN_OKV_jZ2_3wq6iZ-goqMoD0KEc2jYVZ_KJecRr9eJu-JuFHawk_OqWBMna3wH2sRQqmnaMi-GiZBpXgPV9EH_ZjES8IgxTEecgGFEDOjZnlcbysWPS9xSUsLkA3ebOzWAULcoLpC32Gz2GbCfMbkpfeyQBOXFYtlTiB2vLYrCR0I_m16R8BOF4DcHxKVzJkhV0QsSlLx17gOJaRw-Q8hM8Xa-ybY1DcYwRFYmjIgdKh66X6XpKdFOTVeyoQsZPslNtaovJ1gJ2VqA6LXcfBnJqpiJdGGgzbXBq3YZqjYTlrn0GQpzhD6X7ItsdzkS7oRuXbeGOruXnXIydUsMghGijQuLp6YumWU5stBy6Pwnt7mYpEBtBCwGAa642-5eTHykBmEDJTCTH0IcZ-lYZS7RcAjrVM_ETVO50k46iqOyNvM4HNKqDbXxnONwCgAVbOdAutkWv9Eu8xvph4B1dw4BjB8i6iDrRXov-n_GRN-ckpje_V7si6fQQMx_mUkUPM7sut33v-qhTG46owHlPJcamFG-pYapvjxsBjAXypWZeZwx5mViboB5FkhKOoGejvvFhCx69K5fXzssW4rAoQhib9Xnc0Pm9Xsr_2Nt9hU2wRGlktA9cGJtDSJ7MS08ODA3I3P6SGGxYeUWuDMggdGc4E1Erphj98puKwOLV5AVvfyFBtg1zbNqBPuIpEL5bQd5_TjWsgY2SUujqw1JaxRKfXeS_ao6ODo7-qRjclDSdVGk6ovoLAMeq6aIOJK9ZytqRJ6lyjafwNooLxSYHxCGnsqtmsxPiHG01sIIzmynvRby7TyVmv26rk9sMbNZuemdCpeqlifoutXby8vzSbhZ279PZU5Jw7LdRyirmFdVHDY9FgrJ_QS6t7xZmqjn2zuN82W28tF1_CH5fLxugMvLNvtQbVEkbXyBC_DB5rds6J_40Q8kzksa09Pf0H66S5Cw==)](https://mermaid.live/edit#pako:eJyFV2tP20gU_StXqQRBCm-0H1C3VUhImzaENA8oXVbVxL5xRrE91swYiCj_fc-MnRBTykZCWM7c1zn3njt5rAUq5Nop1Waxug_mQlsat29Twsfk00iLbE6DuTB8-M9tzT_Q4SmNMhYL1tRNLf43qJuIiGmLRsGcwzyWaXRb-7fw4j5N2K5MmkHAmTUwvZOWcYx2dz_Q2caJjoxjQ5-UimKmjtLJ-6ne_1AfSxsjlNDf5V2DmlNjtQise1K5pQESaNAFitmphD7z7ltw38ytSoTlsMyaztNIplw5_fzU8nZt2F3zFHUBCKR2_uCDGkCirPJ5zbRKNnKouGt7J-ePDjmcRzF5GpJKCT4Nqv94W3t6Pn2O03Rbu2FzW_OGHZd1l_bpMuO0dUUdETC1tMoKQLpGxaiHZnjdoMOTg-yBrNAR2yoEpd--Kt1-ckyCIroQEkgAA01IbpRPE2mLyla0dF6DpuO_-vxTJhE8TbJYiZDupKBoTtI3QqvXPfU5rt88zmTMTzDUnCl6VPcIuu-en_y5Na65Yb0rrBXBPOEUL1rtPk2GvTdZag0OAXFrzsEiUyiJDqneEjGnodD0CRDtFNm0VDqTOqFRrCya9YrTnCsMwFGBVTPLtLrjsESsizpbmh3Y53dIi2S66s9VnIKS7W-5SG2e0AUzkv9F3W53vL3zZvZfftoH65guOxptpIECEnS9DyxYF-kPYnBFY36w5FiU9nM-BYd6EQJOql8IO29QS1phpUrNn4J63uC8iz8fuoTwqArhEdXLJt1EcMh3ku_XQRsFhvDkaPIiUMFzE9mjV5H9iqhdU6LadgDfSzuXacEXy5jUjPqu5GvmxccC5fd_F69GmCax3KmE_PpyiHoO2jB0Hf7uHU2yQCWu94FkoFKLsHtJWIHq64txuag4GMiMoW_8hoPnpx6QufBOhqORE9AhR4zO91PLHO49JDHV-0DUA7Djy9ty1NIgN_OKV_jZ2_3wq6iZ-goqMoD0KEc2jYVZ_KJecRr9eJu-JuFHawk_OqWBMna3wH2sRQqmnaMi-GiZBpXgPV9EH_ZjES8IgxTEecgGFEDOjZnlcbysWPS9xSUsLkA3ebOzWAULcoLpC32Gz2GbCfMbkpfeyQBOXFYtlTiB2vLYrCR0I_m16R8BOF4DcHxKVzJkhV0QsSlLx17gOJaRw-Q8hM8Xa-ybY1DcYwRFYmjIgdKh66X6XpKdFOTVeyoQsZPslNtaovJ1gJ2VqA6LXcfBnJqpiJdGGgzbXBq3YZqjYTlrn0GQpzhD6X7ItsdzkS7oRuXbeGOruXnXIydUsMghGijQuLp6YumWU5stBy6Pwnt7mYpEBtBCwGAa642-5eTHykBmEDJTCTH0IcZ-lYZS7RcAjrVM_ETVO50k46iqOyNvM4HNKqDbXxnONwCgAVbOdAutkWv9Eu8xvph4B1dw4BjB8i6iDrRXov-n_GRN-ckpje_V7si6fQQMx_mUkUPM7sut33v-qhTG46owHlPJcamFG-pYapvjxsBjAXypWZeZwx5mViboB5FkhKOoGejvvFhCx69K5fXzssW4rAoQhib9Xnc0Pm9Xsr_2Nt9hU2wRGlktA9cGJtDSJ7MS08ODA3I3P6SGGxYeUWuDMggdGc4E1Erphj98puKwOLV5AVvfyFBtg1zbNqBPuIpEL5bQd5_TjWsgY2SUujqw1JaxRKfXeS_ao6ODo7-qRjclDSdVGk6ovoLAMeq6aIOJK9ZytqRJ6lyjafwNooLxSYHxCGnsqtmsxPiHG01sIIzmynvRby7TyVmv26rk9sMbNZuemdCpeqlifoutXby8vzSbhZ279PZU5Jw7LdRyirmFdVHDY9FgrJ_QS6t7xZmqjn2zuN82W28tF1_CH5fLxugMvLNvtQbVEkbXyBC_DB5rds6J_40Q8kzksa09Pf0H66S5Cw==)  
+*Tip: Click the image above to open the full-screen interactive diagram (zoom/pan), or view the [Vector SVG](https://mermaid.ink/svg/pako:eJyFV2tP20gU_StXqQRBCm-0H1C3VUhImzaENA8oXVbVxL5xRrE91swYiCj_fc-MnRBTykZCWM7c1zn3njt5rAUq5Nop1Waxug_mQlsat29Twsfk00iLbE6DuTB8-M9tzT_Q4SmNMhYL1tRNLf43qJuIiGmLRsGcwzyWaXRb-7fw4j5N2K5MmkHAmTUwvZOWcYx2dz_Q2caJjoxjQ5-UimKmjtLJ-6ne_1AfSxsjlNDf5V2DmlNjtQise1K5pQESaNAFitmphD7z7ltw38ytSoTlsMyaztNIplw5_fzU8nZt2F3zFHUBCKR2_uCDGkCirPJ5zbRKNnKouGt7J-ePDjmcRzF5GpJKCT4Nqv94W3t6Pn2O03Rbu2FzW_OGHZd1l_bpMuO0dUUdETC1tMoKQLpGxaiHZnjdoMOTg-yBrNAR2yoEpd--Kt1-ckyCIroQEkgAA01IbpRPE2mLyla0dF6DpuO_-vxTJhE8TbJYiZDupKBoTtI3QqvXPfU5rt88zmTMTzDUnCl6VPcIuu-en_y5Na65Yb0rrBXBPOEUL1rtPk2GvTdZag0OAXFrzsEiUyiJDqneEjGnodD0CRDtFNm0VDqTOqFRrCya9YrTnCsMwFGBVTPLtLrjsESsizpbmh3Y53dIi2S66s9VnIKS7W-5SG2e0AUzkv9F3W53vL3zZvZfftoH65guOxptpIECEnS9DyxYF-kPYnBFY36w5FiU9nM-BYd6EQJOql8IO29QS1phpUrNn4J63uC8iz8fuoTwqArhEdXLJt1EcMh3ku_XQRsFhvDkaPIiUMFzE9mjV5H9iqhdU6LadgDfSzuXacEXy5jUjPqu5GvmxccC5fd_F69GmCax3KmE_PpyiHoO2jB0Hf7uHU2yQCWu94FkoFKLsHtJWIHq64txuag4GMiMoW_8hoPnpx6QufBOhqORE9AhR4zO91PLHO49JDHV-0DUA7Djy9ty1NIgN_OKV_jZ2_3wq6iZ-goqMoD0KEc2jYVZ_KJecRr9eJu-JuFHawk_OqWBMna3wH2sRQqmnaMi-GiZBpXgPV9EH_ZjES8IgxTEecgGFEDOjZnlcbysWPS9xSUsLkA3ebOzWAULcoLpC32Gz2GbCfMbkpfeyQBOXFYtlTiB2vLYrCR0I_m16R8BOF4DcHxKVzJkhV0QsSlLx17gOJaRw-Q8hM8Xa-ybY1DcYwRFYmjIgdKh66X6XpKdFOTVeyoQsZPslNtaovJ1gJ2VqA6LXcfBnJqpiJdGGgzbXBq3YZqjYTlrn0GQpzhD6X7ItsdzkS7oRuXbeGOruXnXIydUsMghGijQuLp6YumWU5stBy6Pwnt7mYpEBtBCwGAa642-5eTHykBmEDJTCTH0IcZ-lYZS7RcAjrVM_ETVO50k46iqOyNvM4HNKqDbXxnONwCgAVbOdAutkWv9Eu8xvph4B1dw4BjB8i6iDrRXov-n_GRN-ckpje_V7si6fQQMx_mUkUPM7sut33v-qhTG46owHlPJcamFG-pYapvjxsBjAXypWZeZwx5mViboB5FkhKOoGejvvFhCx69K5fXzssW4rAoQhib9Xnc0Pm9Xsr_2Nt9hU2wRGlktA9cGJtDSJ7MS08ODA3I3P6SGGxYeUWuDMggdGc4E1Erphj98puKwOLV5AVvfyFBtg1zbNqBPuIpEL5bQd5_TjWsgY2SUujqw1JaxRKfXeS_ao6ODo7-qRjclDSdVGk6ovoLAMeq6aIOJK9ZytqRJ6lyjafwNooLxSYHxCGnsqtmsxPiHG01sIIzmynvRby7TyVmv26rk9sMbNZuemdCpeqlifoutXby8vzSbhZ279PZU5Jw7LdRyirmFdVHDY9FgrJ_QS6t7xZmqjn2zuN82W28tF1_CH5fLxugMvLNvtQbVEkbXyBC_DB5rds6J_40Q8kzksa09Pf0H66S5Cw==).*
+
+<details>
+<summary><b>Click to view raw Mermaid code</b></summary>
 
 ```mermaid
 flowchart TD
@@ -43,6 +49,7 @@ flowchart TD
         K -- "Yes" --> L["Add to ## Upcoming in content.md"]
         K -- "No" --> M["Add to ## Pipeline in content.md"]
         
+        L & M --> RSS1["Regenerate feed.xml (New Event)<br/>& Git Push"]
         M -.->|Sunday Noon Promotion Task| L
     end
 
@@ -69,11 +76,13 @@ flowchart TD
         CP4 -- "Sign-off" --> Z["Switch YouTube Video to PUBLIC"]
         Z --> AA["Update past.md with YouTube URL"]
         AA --> AB["Log to contribute.md:<br/>{Reviewer} & Quantum Bot"]
-        AB --> AC["Regenerate feed.xml & Git Push"]
+        AB --> AC["Regenerate feed.xml (New Video)<br/>& Git Push"]
     end
 
     P --> Q
 ```
+
+</details>
 
 ---
 
@@ -129,6 +138,7 @@ flowchart TD
   * **Crucial Timing:** Pipeline-to-Upcoming promotion must run by **Sunday 12:00 PM (Noon) IST**.
   * **Rationale:** By Sunday End-of-Day (EOD), the Google Apps Script email automation scrapes `content.md` and sends weekly announcement emails to the `quantum-seminars` and `quantum-meets` mailing lists.
   * As a talk enters the upcoming week's horizon, automatically migrate its markdown block from `## Pipeline` up to `## Upcoming`.
+  * Trigger RSS feed update (`feed.xml`) whenever talks are promoted.
   * Maintain formatting integrity: preserve line breaks before `## Pipeline` and email boundary markers (`<!-- SKIP_START -->` / `<!-- SKIP_END -->`).
 
 ### FR-4: Event Lifecycle States (Reschedules & Cancellations)
@@ -136,6 +146,7 @@ flowchart TD
   * Update date/time and venue.
   * Adjust section placement (`Upcoming` vs `Pipeline`) based on the new date.
   * Add note `(rescheduled to [New Date])` or `(being rescheduled)`.
+  * Update RSS feed with rescheduled status.
 * **FR-4.2 (Cancelled - Dead State):**
   * Format heading: `### ~~[{EventType}] {Speaker}—[{Title}]({Link})~~ [CANCELLED]`.
   * Remains on `content.md` until the scheduled date elapses.
@@ -186,8 +197,19 @@ flowchart TD
 * **FR-6.3 (Repository Reconciliation & RSS):**
   * In `past.md`, replace placeholder `[Teams](...)` link with `[YouTube](https://youtu.be/{videoId})`.
   * In `contribute.md`, log entry: `| {Speaker Name} | {Reviewer Name} & Quantum Bot | {Event Date} |`.
-  * Rebuild `feed.xml` RSS feed.
+  * **Regenerate RSS Feed (`feed.xml`)**: Add the newly published talk with its YouTube URL.
   * Commit and push all updates to `main`.
+
+### FR-7: RSS Feed Architecture & Producer Specifications
+* **FR-7.1 (Dual Syndication):**
+  * **Upcoming Talks Channel:** Broadcasts newly scheduled talks with Title, Speaker, Date/Time, Abstract, and Teams meeting link.
+  * **Published Recordings Channel:** Broadcasts finalized YouTube recording links as soon as they are published.
+* **FR-7.2 (Stable GUID & Publication Dates):**
+  * Assign deterministic `<guid isPermaLink="false">` based on speaker and date (e.g. `quantum-meets-2026-11-04-daochen-wang`) so RSS reader apps never trigger duplicate alerts on subsequent markdown edits.
+  * `<pubDate>` formatted per RFC-822 standard.
+* **FR-7.3 (Auto-Discovery in HTML):**
+  * Ensure `<link rel="alternate" type="application/rss+xml" title="Quantum Meets RSS Feed" href="https://quantum-iiit.github.io/feed.xml">` is embedded in `index.html`.
+  * Surface an `[[RSS]]` link in `content.md` header alongside Google Calendar and mailing lists.
 
 ---
 

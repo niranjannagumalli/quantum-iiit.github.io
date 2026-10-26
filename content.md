@@ -92,24 +92,6 @@ ultimately to its absence, beyond Rydberg-blockade-based constraints.
 
 
 
-### [Quantum Seminar] Daochen Wang—[Rational degree is polynomially related to degree](https://arxiv.org/abs/2601.08727) (presented online)
-
-<img align="left" width="140" alt="image" src="https://raw.githubusercontent.com/niranjannagumalli/quantum-iiit.github.io/speaker-photos/photos/daochen-wang-mvovk72f.jpg" /> 
-
-We prove that deg(f) is at most rdeg(f) cubed (up to logarithmic factors) for every Boolean function f, where deg(f) is the degree of f and rdeg(f) is the rational degree of f. This resolves the second of the three open problems stated by Nisan and Szegedy, and attributed to Fortnow, in 1994. [Based on joint work with Robin Kothari, Matt Kovacs-Deak, and Rain Zimin Yang.
-
-<div style="clear: both;"></div>
-<br/>
-<br/>
-
-
-
-| Event | Speaker | Affiliation | Venue | Date | Time | Link |
-|-|-|-|-|-|-|-|
-| Seminar | Daochen Wang | University of British Columbia, Canada | Meeting Room, CQST, Vindhya (3rd level), IIIT Hyderabad | Wednesday, November 4, 2026 | 11:00am – 12:30pm |  [Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_MTIwYzA1N2UtZTk4OC00MmUyLTgzNTEtOGVlNjIyMjVkZGY0%40thread.v2/0?context=%7b%22Tid%22%3a%22031a3bbc-cf7c-4e2b-96ec-867555540a1c%22%2c%22Oid%22%3a%227a4a124e-e79f-4645-a13d-e0c802a8b77b%22%7d) | 
-
-<br/>
-
 
 
 

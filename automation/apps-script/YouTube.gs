@@ -93,7 +93,7 @@ function setVideoPrivacy(videoId, privacy) {
 
 /** PR replacing the talk's [Teams](...) link with [YouTube](https://youtu.be/ID). */
 function createVideoLinkPr(videoId, talkKey) {
-  const head = gh_('get', '/repos/' + UPSTREAM_REPO + '/commits/' + BASE_BRANCH).sha;
+  const head = gh_('get', '/repos/' + siteRepo() + '/commits/' + BASE_BRANCH).sha;
   const file = talkKey.split(':')[0];
   const text = readSiteFile(file, head);
   const talk = parseTalks(text, file).find(t => talkKeyOf_(t) === talkKey);

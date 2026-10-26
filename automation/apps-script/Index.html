@@ -55,6 +55,7 @@
   </nav>
 </header>
 
+<div id="test-banner" class="hidden" style="background:var(--warnbg);color:var(--warn);padding:8px 20px;font-weight:600"></div>
 <main>
   <!-- ================================================================ Calendar → Website -->
   <section id="tab-website">
@@ -151,6 +152,10 @@
         It is stored in your own Apps Script user properties; other maintainers can't see it.</p>
       <label class="field"><span>Fork (optional)</span>
         <input type="text" id="fork" placeholder="owner/quantum-iiit.github.io — default: your-login/quantum-iiit.github.io"></label>
+      <label class="field"><span>Test repository (optional)</span>
+        <input type="text" id="site-repo" placeholder="e.g. your-login/quantum-iiit.github.io — blank = the real website"></label>
+      <p class="muted">To try the tools safely, put your fork here. Everything is then read from and opened as a PR
+        against that repository's <code>main</code> instead of the real website. Clear it to go back.</p>
       <button class="btn" id="save-settings">Save</button>
     </div>
   </section>
@@ -200,9 +205,13 @@ function showSettings(s) {
     ? (s.login ? 'Connected to GitHub as <b>' + esc(s.login) + '</b>.' : '<span class="pill bad">Token problem</span> ' + esc(s.error))
     : 'No GitHub token saved yet. The website tool needs one to read the repository and open pull requests.';
   $('#fork').value = s.forkRepo || '';
+  $('#site-repo').value = s.siteRepo || '';
+  $('#test-banner').classList.toggle('hidden', !s.siteRepo);
+  $('#test-banner').textContent = 'Test mode: reading and opening PRs against ' + s.siteRepo +
+    ', not ' + s.upstream + '. Clear "Test repository" in Settings to use the real website.';
 }
 $('#save-settings').onclick = async () => {
-  const s = await step('Saving settings', () => call('saveSettings', $('#token').value, $('#fork').value));
+  const s = await step('Saving settings', () => call('saveSettings', $('#token').value, $('#fork').value, $('#site-repo').value));
   $('#token').value = '';
   showSettings(s);
   log('Settings saved' + (s.login ? ' (GitHub: ' + s.login + ')' : ''), 'done');

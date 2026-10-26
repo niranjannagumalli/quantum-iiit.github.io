@@ -51,23 +51,25 @@ function ghFind_(path) {
  */
 function githubContext_() {
   const login = gh_('get', '/user').login;
-  const upstream = gh_('get', '/repos/' + UPSTREAM_REPO);
+  const site = siteRepo();
+  const upstream = gh_('get', '/repos/' + site);
   const canPush = !!(upstream.permissions && upstream.permissions.push);
-  const head = gh_('get', '/repos/' + UPSTREAM_REPO + '/commits/' + BASE_BRANCH);
+  const head = gh_('get', '/repos/' + site + '/commits/' + BASE_BRANCH);
   const forkName = PropertiesService.getUserProperties().getProperty('FORK_REPO') ||
-    login + '/' + UPSTREAM_REPO.split('/')[1];
+    login + '/' + site.split('/')[1];
   const fork = ghFind_('/repos/' + forkName);
-  const isFork = !!(fork && fork.fork && fork.parent && fork.parent.full_name === UPSTREAM_REPO);
+  const isFork = !!(fork && fork.fork && fork.parent && fork.parent.full_name === site);
 
   const ctx = {
     login: login,
-    upstream: UPSTREAM_REPO,
+    upstream: site,
+    testMode: site !== UPSTREAM_REPO,
     canPush: canPush,
-    workRepo: isFork ? fork.full_name : (canPush ? UPSTREAM_REPO : ''),
+    workRepo: isFork ? fork.full_name : (canPush ? site : ''),
     isFork: isFork,
     behindBy: 0,
     aheadBy: 0,
-    photoRepo: canPush ? UPSTREAM_REPO : (isFork ? fork.full_name : ''),
+    photoRepo: canPush ? site : (isFork ? fork.full_name : ''),
     head: {
       sha: head.sha,
       message: head.commit.message.split('\n')[0],
@@ -76,12 +78,12 @@ function githubContext_() {
     },
   };
   if (isFork) {
-    const cmp = gh_('get', '/repos/' + UPSTREAM_REPO + '/compare/' + BASE_BRANCH + '...' +
+    const cmp = gh_('get', '/repos/' + siteRepo() + '/compare/' + BASE_BRANCH + '...' +
       fork.owner.login + ':' + BASE_BRANCH);
     ctx.behindBy = cmp.behind_by;
     ctx.aheadBy = cmp.ahead_by;
   }
-  ctx.openPrs = gh_('get', '/repos/' + UPSTREAM_REPO + '/pulls?state=open&per_page=100')
+  ctx.openPrs = gh_('get', '/repos/' + siteRepo() + '/pulls?state=open&per_page=100')
     .filter(pr => pr.head.ref.indexOf(WEBSITE_PR_PREFIX) === 0 || pr.head.ref.indexOf(YOUTUBE_PR_PREFIX) === 0)
     .map(pr => ({ number: pr.number, title: pr.title, url: pr.html_url, branch: pr.head.ref }));
   return ctx;
@@ -99,10 +101,10 @@ function syncFork() {
 function readSiteFile(path, ref) {
   ref = ref || BASE_BRANCH;
   if (PropertiesService.getUserProperties().getProperty('GITHUB_TOKEN')) {
-    return gh_('get', '/repos/' + UPSTREAM_REPO + '/contents/' + path + '?ref=' + ref, null,
+    return gh_('get', '/repos/' + siteRepo() + '/contents/' + path + '?ref=' + ref, null,
       'application/vnd.github.raw+json');
   }
-  const res = UrlFetchApp.fetch('https://raw.githubusercontent.com/' + UPSTREAM_REPO + '/' + ref + '/' + path);
+  const res = UrlFetchApp.fetch('https://raw.githubusercontent.com/' + siteRepo() + '/' + ref + '/' + path);
   return res.getContentText('UTF-8');
 }
 
@@ -114,14 +116,14 @@ function openPullRequest_(opts) {
   const log = [];
   const ctx = githubContext_();
   if (!ctx.workRepo) {
-    throw new Error('You cannot push to ' + UPSTREAM_REPO + ' and have no fork of it. Fork it on GitHub first.');
+    throw new Error('You cannot push to ' + siteRepo() + ' and have no fork of it. Fork it on GitHub first.');
   }
   if (ctx.head.sha !== opts.baseSha) {
     throw new Error(BASE_BRANCH + ' changed since you loaded the page (now ' + ctx.head.sha.slice(0, 7) +
       '). Reload and try again so nothing is overwritten.');
   }
   if (ctx.isFork && ctx.behindBy > 0) {
-    throw new Error('Your fork ' + ctx.workRepo + ' is ' + ctx.behindBy + ' commit(s) behind ' + UPSTREAM_REPO +
+    throw new Error('Your fork ' + ctx.workRepo + ' is ' + ctx.behindBy + ' commit(s) behind ' + siteRepo() +
       '. Sync it first.');
   }
   const stamp = Utilities.formatDate(new Date(), 'Asia/Kolkata', 'yyyyMMdd-HHmmss');
@@ -140,7 +142,7 @@ function openPullRequest_(opts) {
     log.push('Committed ' + path + ': "' + opts.commitMessage + '"');
   });
 
-  const pr = gh_('post', '/repos/' + UPSTREAM_REPO + '/pulls', {
+  const pr = gh_('post', '/repos/' + siteRepo() + '/pulls', {
     title: opts.title,
     body: opts.body,
     head: ctx.isFork ? ctx.workRepo.split('/')[0] + ':' + branch : branch,
@@ -157,7 +159,7 @@ function openPullRequest_(opts) {
  */
 function uploadPhoto(base64, mimeType, baseName) {
   const ctx = githubContext_();
-  if (!ctx.photoRepo) throw new Error('No repository to store the photo in. Fork ' + UPSTREAM_REPO + ' first.');
+  if (!ctx.photoRepo) throw new Error('No repository to store the photo in. Fork ' + siteRepo() + ' first.');
   ensurePhotoBranch_(ctx.photoRepo);
   const ext = { 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif' }[mimeType] || 'jpg';
   const slug = (baseName || 'speaker').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '')

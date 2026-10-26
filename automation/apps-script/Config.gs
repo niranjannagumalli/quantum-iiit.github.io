@@ -19,3 +19,11 @@ const DEFAULT_TEAMS_URL =
   '%40thread.v2/0?context=%7b%22Tid%22%3a%22031a3bbc-cf7c-4e2b-96ec-867555540a1c%22%2c%22Oid%22%3a' +
   '%227a4a124e-e79f-4645-a13d-e0c802a8b77b%22%7d';
 const PLACEHOLDER_PHOTO = 'https://github.com/user-attachments/assets/57584f93-28ff-435e-82fa-36bc0b42fece';
+
+/**
+ * The website repository the tools read and open PRs against. Normally UPSTREAM_REPO; a maintainer can
+ * point it at their own fork in Settings to try the tools without touching the real site.
+ */
+function siteRepo() {
+  return PropertiesService.getUserProperties().getProperty('SITE_REPO') || UPSTREAM_REPO;
+}

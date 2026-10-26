@@ -5,7 +5,7 @@ function loadWebsiteState() {
   const log = [];
   const now = new Date();
   const repo = githubContext_();
-  log.push('Upstream ' + UPSTREAM_REPO + ' ' + BASE_BRANCH + ' is at ' + repo.head.sha.slice(0, 7) + ' ("' + repo.head.message + '")');
+  log.push('Upstream ' + siteRepo() + ' ' + BASE_BRANCH + ' is at ' + repo.head.sha.slice(0, 7) + ' ("' + repo.head.message + '")');
 
   const content = readSiteFile('content.md', repo.head.sha);
   const past = readSiteFile('past.md', repo.head.sha);

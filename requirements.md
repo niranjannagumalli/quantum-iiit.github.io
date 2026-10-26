@@ -1,254 +1,193 @@
 # System Requirements Document (SRD)
-## Quantum Meets Automated Seminar Pipeline
+## Quantum Meets Maintainer Tools
 
-**Document Status:** Approved & Updated (v1.5)  
-**Target Repository:** `quantum-iiit.github.io`  
-
----
-
-## 1. Executive Summary & Objective
-
-The **Quantum Meets Automated Seminar Pipeline** is an end-to-end automation and orchestration system designed to streamline the complete lifecycle of scientific talks for the Quantum Meets seminar series.
-
-The expanded lifecycle covers three major phases:
-1. **Intake, Image & Scheduling:** Ingesting speaker submissions from Google Forms, scraping and face-cropping portrait images from the speaker's website, formatting for GitHub CDN hosting via the `gh image` CLI extension, formatting plain-text abstracts to Markdown, validating through human checkpoints, creating Google Calendar events, publishing to either `Upcoming` or `Pipeline` sections on `content.md`, and **immediately syndicating via RSS (`feed.xml`)**.
-2. **Post-Event Archival & Lifecycle:** Promoting talks from `Pipeline` to `Upcoming` by Sunday noon IST (with RSS update), moving finished talks from `Upcoming` to `past.md`, and managing reschedules or cancellations.
-3. **Video Processing & YouTube Publishing:** Editing Microsoft Teams recordings (dynamic slide crop, speaker top-right anchoring, participant blurring, speech-based intro/outro cutoff), local review gating, unlisted YouTube upload, strict metadata formatting, playlist categorization, public release sign-off, **RSS update with YouTube recording**, and dual-credit logging in `contribute.md`.
+**Document Status:** Updated (v2.0, 2026-10-26). Scope reduced to two tools; supersedes v1.5.
+**Target Repository:** `quantum-iiit/quantum-iiit.github.io`
+**Implementation:** [`automation/apps-script/`](automation/apps-script/README.md) (one Google Apps Script web app)
 
 ---
 
-## 2. Process Flow & Human-in-the-Loop Architecture
+## 1. Summary & Scope
 
-[![Process Flow Diagram](https://mermaid.ink/img/pako:eJyVWAtv2zgS_isDF40dQE5tx3msb68Lx05aX53UjZ203cthQUsjmbAkCiSVxJf6v--QlF9Z-bYXIIgicr6Z-eZF8aXiiwArHai8ffvCU6478PKQAlT1DBOsdqA6ZQqr3ubdPZOcTWNU1WIrLQRMzq8Jh16FLFboFe-nzJ9HUuRpYJDehPanulpNGE8v5lHZUkpgF0IGKO1qE1u_HE_Xq5nkCZOLnoiFLJMu1if4rDd7GmHzrMVe73FKNrteaYp5insXFfoiDXYNwfDYP1vv0Cg1391wHrLQX28IRaqvWMLjhVlVC6UxqefcgzrLshjr7o0HiqWqrlDycEd0zP9rY9Q8yZ6r5v3yIV0u3759SMNYPPkzJjVM-k7Aj5lSfQwhwJDlsYaQx3GnoM5TWoo5dgoXi3_rTzzQs04re_Z840GnINEzuutPyKOZ7pw2Gv94pSFiGlfwlpA1_LR9ctz4ZS_82fnxSSPcgZ-KOHiNz3zNRVpowDA83XYgaGNwvldDE4_Z-d86QHFLeMrilQo_DMKTtYpG--z85Gw_R6dtJAr_RoXKp9GKI5sTa_jT9ln7_P8KQcGR02CAJctmMJpR5Tb__VCxD9DswDhDNkcJg1TTXw8GCYsQDmDszzDIKdejh8p_HIr56ZLsSqTr-5hpRaKPXCNt63Q6RRjq9fdwsbX1ipxS8EGIKEa4EjL5dSrfva9NuI5JJ5Pf-KMH3Sn5RwDmSeQaRmSJB6aHHDrwIks31lxYRT1S1M21SCjFgsIRuEwjqtNtozZim6eeBegTwFecks9EEll7-WztUESX0MKaGkqRbJm1x56-hbt8MfySJHlKbQ6ID0JXxNFvD5UlyZla2AhdkhA8VL6jeqhY-SvjzwDewecM0949XDEfoSdF5kgbKBHbYqLXHjTbjewZNJMR6n00FRpuRKHgg0kAiixcU7fV9Es-k7XjfJpw7Zx2SLZorUll5F3ZpY9_8CQiwLssFiyAR84gmgG3adQbDjrW6PWbF0pvXJKgxEzAi3gi3e_M89LuWzOfU2OrM62ZP0swpRe9_g3c3Q5_LqC9UZNi0JuhP88EuQhNqPVYjKYzwwdy6tCZ1RNpyGUC41hoyvl7THMsCxHhOQq7WSbFIwYFkQPyuyfRsHT5SGYCT1dJvlLnYlb9krNU5wlcI5IzP2AwGEyqhz_nzb_-0M_a5ERRH5SBkughg00lEUkonTujmGIJZsSBiTLXH_MpxVjOA-IZatdMzzzocc2MPrUvWzZPNrSkZkC_1oiC3NYuuS2oFfm9ze0tPnJ8Wqv3HLuEZCJpu0wZ09uct0o5_0TKB6rgu2-of-J6xlMXUOQxiBBuDAdfEee_Of5__ad7NaZ6ZIvDMs2fXpfh0FAeBKYy3ryBu8wXiakZYphGvCbtR0lQHsBPr-rtegdpxDM0Z4ifQdo8DYm5a4t2Ox6bDn6LEVLx2E6AGBw9JzHUbohxy8yh9fvAJAGMcjVz8KsZtoElyKP6-x-OF7gR1KtG1OqE7eITpuY_YOh2UzaXj5PWepy0OjASStddbCaSDijcAjk7xovU3xkmQ-vPDclPWDwHqkY_zgNUFCYaLUqFeRwv9mTpjZX9TLLXlBxgAS5i4c_BtGrr_YZcw3zG1H6eP1u0EaEZQ3siMY3wwDK36t1b_pSRuZee4zU9xx245wEKGlERqoIYGlcYxzwyjF0GBP9q4H4xoWZPVNUsUXBLx0sZmDSsHSVZ20W5NhQ-nUtoXqTYl5zYWCvYrXGXPm4soz-DLlm_UFxR_c64MpOvO74tyvcjBdKmQkZ82LqtTmYsncN3kVfpjS4n8ovVMTZ9kURz4oh8VsbVIVuY6dlHjVbGqekvUjrq-tSBiRnlrY8jB6bJae7zjPqmKtd1a3VN7PQPuHjnyJ3QId4Wau3qKskw2tNkx1b4joRXJpgJm5GgRywrItRgHFBO5VK6oJSgTGjHnUW6JyQTPzqBODtG0jbAkvTdmyrtdaq0OzB5EvWxNjOTGJ_kUySzYjSLB3-tpPuiMx_vduZjKHKjaMZb7bnoqiaSihBddIpu-TkzXpKY5gnlEUsyoK1EA4WotHeS4tJe_XVzLqAKXPnBFNzdDAfjyWW_nNWvVvgbCbsBB2MtuW9yR_mSW-NWbb3ZaID5piFT6ShJj-S7Bxm1WFCYMWqPQnp28wUdiN2u7ZPm-uhJ3ntgkt6jLkjnqWjvfPxmrftu0k4pHqXGNZq8i5hTxdTwKDqCVqN1uifvvheRau9Gqg21FT0m6Cb3toJ1b77yFnCXGh2UYfYgVBaGtgvDmMyqizAswvC7KXmaklTyKyUuR43ldxfDQa_c1t-tdLdroxiYSVM0UTty11h7j2XdrgMwXwJDERl1pidLPqXGQDDOuReXnCiXlIerc9KF2NNguu7M3-39rxFovfuZEbhViiOL--UhrXhQSWgX40GlAy8Ve8NhbkPMrYdZ3L3ysHtWlx2V1WWH2b265zCyxTe1xXZXHK_ebt9flC-try7ssvvk21reurWwG9xXu9mwvrB49X5z0WAWfuaiobJcLv8E-NumUQ==?bgColor=white)](https://mermaid.live/edit#pako:eJyVWAtv2zgS_isDF40dQE5tx3msb68Lx05aX53UjZ203cthQUsjmbAkCiSVxJf6v--QlF9Z-bYXIIgicr6Z-eZF8aXiiwArHai8ffvCU6478PKQAlT1DBOsdqA6ZQqr3ubdPZOcTWNU1WIrLQRMzq8Jh16FLFboFe-nzJ9HUuRpYJDehPanulpNGE8v5lHZUkpgF0IGKO1qE1u_HE_Xq5nkCZOLnoiFLJMu1if4rDd7GmHzrMVe73FKNrteaYp5insXFfoiDXYNwfDYP1vv0Cg1391wHrLQX28IRaqvWMLjhVlVC6UxqefcgzrLshjr7o0HiqWqrlDycEd0zP9rY9Q8yZ6r5v3yIV0u3759SMNYPPkzJjVM-k7Aj5lSfQwhwJDlsYaQx3GnoM5TWoo5dgoXi3_rTzzQs04re_Z840GnINEzuutPyKOZ7pw2Gv94pSFiGlfwlpA1_LR9ctz4ZS_82fnxSSPcgZ-KOHiNz3zNRVpowDA83XYgaGNwvldDE4_Z-d86QHFLeMrilQo_DMKTtYpG--z85Gw_R6dtJAr_RoXKp9GKI5sTa_jT9ln7_P8KQcGR02CAJctmMJpR5Tb__VCxD9DswDhDNkcJg1TTXw8GCYsQDmDszzDIKdejh8p_HIr56ZLsSqTr-5hpRaKPXCNt63Q6RRjq9fdwsbX1ipxS8EGIKEa4EjL5dSrfva9NuI5JJ5Pf-KMH3Sn5RwDmSeQaRmSJB6aHHDrwIks31lxYRT1S1M21SCjFgsIRuEwjqtNtozZim6eeBegTwFecks9EEll7-WztUESX0MKaGkqRbJm1x56-hbt8MfySJHlKbQ6ID0JXxNFvD5UlyZla2AhdkhA8VL6jeqhY-SvjzwDewecM0949XDEfoSdF5kgbKBHbYqLXHjTbjewZNJMR6n00FRpuRKHgg0kAiixcU7fV9Es-k7XjfJpw7Zx2SLZorUll5F3ZpY9_8CQiwLssFiyAR84gmgG3adQbDjrW6PWbF0pvXJKgxEzAi3gi3e_M89LuWzOfU2OrM62ZP0swpRe9_g3c3Q5_LqC9UZNi0JuhP88EuQhNqPVYjKYzwwdy6tCZ1RNpyGUC41hoyvl7THMsCxHhOQq7WSbFIwYFkQPyuyfRsHT5SGYCT1dJvlLnYlb9krNU5wlcI5IzP2AwGEyqhz_nzb_-0M_a5ERRH5SBkughg00lEUkonTujmGIJZsSBiTLXH_MpxVjOA-IZatdMzzzocc2MPrUvWzZPNrSkZkC_1oiC3NYuuS2oFfm9ze0tPnJ8Wqv3HLuEZCJpu0wZ09uct0o5_0TKB6rgu2-of-J6xlMXUOQxiBBuDAdfEee_Of5__ad7NaZ6ZIvDMs2fXpfh0FAeBKYy3ryBu8wXiakZYphGvCbtR0lQHsBPr-rtegdpxDM0Z4ifQdo8DYm5a4t2Ox6bDn6LEVLx2E6AGBw9JzHUbohxy8yh9fvAJAGMcjVz8KsZtoElyKP6-x-OF7gR1KtG1OqE7eITpuY_YOh2UzaXj5PWepy0OjASStddbCaSDijcAjk7xovU3xkmQ-vPDclPWDwHqkY_zgNUFCYaLUqFeRwv9mTpjZX9TLLXlBxgAS5i4c_BtGrr_YZcw3zG1H6eP1u0EaEZQ3siMY3wwDK36t1b_pSRuZee4zU9xx245wEKGlERqoIYGlcYxzwyjF0GBP9q4H4xoWZPVNUsUXBLx0sZmDSsHSVZ20W5NhQ-nUtoXqTYl5zYWCvYrXGXPm4soz-DLlm_UFxR_c64MpOvO74tyvcjBdKmQkZ82LqtTmYsncN3kVfpjS4n8ovVMTZ9kURz4oh8VsbVIVuY6dlHjVbGqekvUjrq-tSBiRnlrY8jB6bJae7zjPqmKtd1a3VN7PQPuHjnyJ3QId4Wau3qKskw2tNkx1b4joRXJpgJm5GgRywrItRgHFBO5VK6oJSgTGjHnUW6JyQTPzqBODtG0jbAkvTdmyrtdaq0OzB5EvWxNjOTGJ_kUySzYjSLB3-tpPuiMx_vduZjKHKjaMZb7bnoqiaSihBddIpu-TkzXpKY5gnlEUsyoK1EA4WotHeS4tJe_XVzLqAKXPnBFNzdDAfjyWW_nNWvVvgbCbsBB2MtuW9yR_mSW-NWbb3ZaID5piFT6ShJj-S7Bxm1WFCYMWqPQnp28wUdiN2u7ZPm-uhJ3ntgkt6jLkjnqWjvfPxmrftu0k4pHqXGNZq8i5hTxdTwKDqCVqN1uifvvheRau9Gqg21FT0m6Cb3toJ1b77yFnCXGh2UYfYgVBaGtgvDmMyqizAswvC7KXmaklTyKyUuR43ldxfDQa_c1t-tdLdroxiYSVM0UTty11h7j2XdrgMwXwJDERl1pidLPqXGQDDOuReXnCiXlIerc9KF2NNguu7M3-39rxFovfuZEbhViiOL--UhrXhQSWgX40GlAy8Ve8NhbkPMrYdZ3L3ysHtWlx2V1WWH2b265zCyxTe1xXZXHK_ebt9flC-try7ssvvk21reurWwG9xXu9mwvrB49X5z0WAWfuaiobJcLv8E-NumUQ==)  
-*Tip: Click the image above to open the full-screen interactive diagram (zoom/pan), or view the [Vector SVG (High Contrast)](https://mermaid.ink/svg/pako:eJyVWAtv2zgS_isDF40dQE5tx3msb68Lx05aX53UjZ203cthQUsjmbAkCiSVxJf6v--QlF9Z-bYXIIgicr6Z-eZF8aXiiwArHai8ffvCU6478PKQAlT1DBOsdqA6ZQqr3ubdPZOcTWNU1WIrLQRMzq8Jh16FLFboFe-nzJ9HUuRpYJDehPanulpNGE8v5lHZUkpgF0IGKO1qE1u_HE_Xq5nkCZOLnoiFLJMu1if4rDd7GmHzrMVe73FKNrteaYp5insXFfoiDXYNwfDYP1vv0Cg1391wHrLQX28IRaqvWMLjhVlVC6UxqefcgzrLshjr7o0HiqWqrlDycEd0zP9rY9Q8yZ6r5v3yIV0u3759SMNYPPkzJjVM-k7Aj5lSfQwhwJDlsYaQx3GnoM5TWoo5dgoXi3_rTzzQs04re_Z840GnINEzuutPyKOZ7pw2Gv94pSFiGlfwlpA1_LR9ctz4ZS_82fnxSSPcgZ-KOHiNz3zNRVpowDA83XYgaGNwvldDE4_Z-d86QHFLeMrilQo_DMKTtYpG--z85Gw_R6dtJAr_RoXKp9GKI5sTa_jT9ln7_P8KQcGR02CAJctmMJpR5Tb__VCxD9DswDhDNkcJg1TTXw8GCYsQDmDszzDIKdejh8p_HIr56ZLsSqTr-5hpRaKPXCNt63Q6RRjq9fdwsbX1ipxS8EGIKEa4EjL5dSrfva9NuI5JJ5Pf-KMH3Sn5RwDmSeQaRmSJB6aHHDrwIks31lxYRT1S1M21SCjFgsIRuEwjqtNtozZim6eeBegTwFecks9EEll7-WztUESX0MKaGkqRbJm1x56-hbt8MfySJHlKbQ6ID0JXxNFvD5UlyZla2AhdkhA8VL6jeqhY-SvjzwDewecM0949XDEfoSdF5kgbKBHbYqLXHjTbjewZNJMR6n00FRpuRKHgg0kAiixcU7fV9Es-k7XjfJpw7Zx2SLZorUll5F3ZpY9_8CQiwLssFiyAR84gmgG3adQbDjrW6PWbF0pvXJKgxEzAi3gi3e_M89LuWzOfU2OrM62ZP0swpRe9_g3c3Q5_LqC9UZNi0JuhP88EuQhNqPVYjKYzwwdy6tCZ1RNpyGUC41hoyvl7THMsCxHhOQq7WSbFIwYFkQPyuyfRsHT5SGYCT1dJvlLnYlb9krNU5wlcI5IzP2AwGEyqhz_nzb_-0M_a5ERRH5SBkughg00lEUkonTujmGIJZsSBiTLXH_MpxVjOA-IZatdMzzzocc2MPrUvWzZPNrSkZkC_1oiC3NYuuS2oFfm9ze0tPnJ8Wqv3HLuEZCJpu0wZ09uct0o5_0TKB6rgu2-of-J6xlMXUOQxiBBuDAdfEee_Of5__ad7NaZ6ZIvDMs2fXpfh0FAeBKYy3ryBu8wXiakZYphGvCbtR0lQHsBPr-rtegdpxDM0Z4ifQdo8DYm5a4t2Ox6bDn6LEVLx2E6AGBw9JzHUbohxy8yh9fvAJAGMcjVz8KsZtoElyKP6-x-OF7gR1KtG1OqE7eITpuY_YOh2UzaXj5PWepy0OjASStddbCaSDijcAjk7xovU3xkmQ-vPDclPWDwHqkY_zgNUFCYaLUqFeRwv9mTpjZX9TLLXlBxgAS5i4c_BtGrr_YZcw3zG1H6eP1u0EaEZQ3siMY3wwDK36t1b_pSRuZee4zU9xx245wEKGlERqoIYGlcYxzwyjF0GBP9q4H4xoWZPVNUsUXBLx0sZmDSsHSVZ20W5NhQ-nUtoXqTYl5zYWCvYrXGXPm4soz-DLlm_UFxR_c64MpOvO74tyvcjBdKmQkZ82LqtTmYsncN3kVfpjS4n8ovVMTZ9kURz4oh8VsbVIVuY6dlHjVbGqekvUjrq-tSBiRnlrY8jB6bJae7zjPqmKtd1a3VN7PQPuHjnyJ3QId4Wau3qKskw2tNkx1b4joRXJpgJm5GgRywrItRgHFBO5VK6oJSgTGjHnUW6JyQTPzqBODtG0jbAkvTdmyrtdaq0OzB5EvWxNjOTGJ_kUySzYjSLB3-tpPuiMx_vduZjKHKjaMZb7bnoqiaSihBddIpu-TkzXpKY5gnlEUsyoK1EA4WotHeS4tJe_XVzLqAKXPnBFNzdDAfjyWW_nNWvVvgbCbsBB2MtuW9yR_mSW-NWbb3ZaID5piFT6ShJj-S7Bxm1WFCYMWqPQnp28wUdiN2u7ZPm-uhJ3ntgkt6jLkjnqWjvfPxmrftu0k4pHqXGNZq8i5hTxdTwKDqCVqN1uifvvheRau9Gqg21FT0m6Cb3toJ1b77yFnCXGh2UYfYgVBaGtgvDmMyqizAswvC7KXmaklTyKyUuR43ldxfDQa_c1t-tdLdroxiYSVM0UTty11h7j2XdrgMwXwJDERl1pidLPqXGQDDOuReXnCiXlIerc9KF2NNguu7M3-39rxFovfuZEbhViiOL--UhrXhQSWgX40GlAy8Ve8NhbkPMrYdZ3L3ysHtWlx2V1WWH2b265zCyxTe1xXZXHK_ebt9flC-try7ssvvk21reurWwG9xXu9mwvrB49X5z0WAWfuaiobJcLv8E-NumUQ==?bgColor=white).*
+The **Google Calendar is the ground truth** for every Quantum Meets talk:
+<https://calendar.google.com/calendar/embed?src=b02429b4ded9c76a1e5e691621d9da9263d3393d55efba77086f8b688470d589%40group.calendar.google.com&ctz=Asia%2FKolkata>
 
-<details>
-<summary><b>Click to view raw Mermaid code</b></summary>
+When a talk is confirmed, a maintainer fills in its calendar event: title, time, abstract, arXiv, About and venue. The host is always IIIT Hyderabad. Two tools then move that information to the website and to YouTube. Both are tabs of one Google Apps Script web app.
+
+| Tool | Input | Output |
+|-|-|-|
+| **Tool 1: Calendar → Website** | The maintainer runs it after updating the calendar. Optionally, a speaker photo. | A pull request adding missing talks to `content.md`. A maintainer merges it. |
+| **Tool 2: YouTube metadata** | A YouTube link (unlisted recording) and the speaker's name | The title and description saved on the video after a preview. Optionally the video is made public, and a PR links it from `past.md`. |
+
+**Out of scope.** These v1.5 items are deferred and not built:
+
+- Google Form intake
+- Scraping photos from the speaker's page, and face cropping
+- Creating calendar events
+- Automatic Sunday Pipeline→Upcoming promotion
+- Reschedule and cancellation automation
+- Moving talks to `past.md`
+- Video editing (cropping, blurring, Whisper trimming)
+- YouTube upload and playlists
+- `contribute.md` logging
+- The RSS feed
+
+---
+
+## 2. Process Flow
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'darkMode': false,
-    'background': '#ffffff',
-    'mainBkg': '#ffffff',
-    'nodeBorder': '#1e293b',
-    'primaryColor': '#ffffff',
-    'primaryTextColor': '#0f172a',
-    'primaryBorderColor': '#1e293b',
-    'lineColor': '#1e293b',
-    'secondaryColor': '#fef3c7',
-    'tertiaryColor': '#f8fafc',
-    'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '15px'
-  }
-}}%%
 flowchart TD
-    classDef default fill:#ffffff,stroke:#1e293b,stroke-width:2px,color:#0f172a,font-weight:600;
-    classDef gate fill:#fef3c7,stroke:#b45309,stroke-width:2px,color:#78350f,font-weight:bold;
-    classDef action fill:#eff6ff,stroke:#1d4ed8,stroke-width:2px,color:#1e3a8a,font-weight:600;
-    classDef terminal fill:#ecfdf5,stroke:#047857,stroke-width:2px,color:#064e3b,font-weight:600;
+    classDef gate fill:#fef3c7,stroke:#b45309,color:#78350f;
+    classDef action fill:#eff6ff,stroke:#1d4ed8,color:#1e3a8a;
+    classDef done fill:#ecfdf5,stroke:#047857,color:#064e3b;
 
-    subgraph Phase1["Phase 1: Speaker Intake, Image & Scheduling"]
-        A["Speaker Accepts Invite"]:::action --> B["Speaker Fills Google Form<br/>(Title, arXiv, Abstract, About Page, Mode)"]:::default
-        B --> C["Automated Intake Engine"]:::action
-        
-        C --> D["Web Scraper Extracts Photo<br/>from About Page"]:::default
-        D --> E{"Photo Found on Website?"}:::gate
-        E -- "Yes" --> F["AI / OpenCV Face Crop<br/>(Isolate face, 140px target)"]:::default
-        E -- "No" --> G["Ping Maintainer to Submit Photo"]:::gate --> F
-        
-        F --> H_img["Upload via gh image CLI:<br/>gh image {file} --repo {owner/repo}<br/>Extracts user-attachments CDN URL"]:::action
-        
-        C --> CP1{"Checkpoint 1 (Calendar Gate):<br/>Confirm Slot & Venue"}:::gate
-        CP1 -- "Approved" --> I["Create Event in Google Calendar<br/>('Quantum Meets | IIIT')"]:::action
-        
-        C --> J_txt["Abstract Parser & Formatter:<br/>Plain Text -> GitHub Markdown (Math, Citations)"]:::default
-        
-        H_img & I & J_txt --> CP2{"Checkpoint 2 (Website Gate):<br/>Review Markdown, Venue & CDN Image"}:::gate
-        
-        CP2 -- "Approved" --> K{"Is Event Date within<br/>Ceil of Next Week?<br/>(<= Next Sunday)"}:::gate
-        K -- "Yes" --> L["Add to ## Upcoming in content.md"]:::action
-        K -- "No" --> M["Add to ## Pipeline in content.md"]:::action
-        
-        L & M --> RSS1["Regenerate feed.xml (New Event)<br/>& Git Push"]:::terminal
-        M -.->|Sunday Noon Promotion Task| L
+    subgraph T1["Tool 1: Calendar → Website"]
+        A["Maintainer updates the Google Calendar event"] --> B["Maintainer opens the web app"]:::action
+        B --> C["Repository check: upstream main HEAD,<br/>fork behind/ahead, open tool PRs"]:::action
+        C --> CP1{"Branch up to date?<br/>(Sync fork if not)"}:::gate
+        B --> D["Read upcoming calendar events;<br/>compare with content.md + past.md"]:::action
+        D --> E["Missing talks → generated entries<br/>(Upcoming / Pipeline by date)"]:::action
+        E --> F["Maintainer adds affiliation, uploads photo<br/>→ GitHub-hosted image URL"]:::action
+        F --> CP2{"Review markdown + rendered preview;<br/>confirm calendar & branch are current"}:::gate
+        CP1 --> CP2
+        CP2 --> G["Branch from main → commit content.md → open PR"]:::action
+        G --> H["Maintainer merges the PR"]:::done
     end
 
-    subgraph Phase2["Phase 2: Post-Event Transition & Git Sync"]
-        L --> N["Talk Concludes Successfully"]:::default
-        N --> O["Move Talk Block from<br/>content.md to past.md"]:::action
-        O --> P["Git Commit & Push Website Transition"]:::terminal
+    subgraph T2["Tool 2: YouTube metadata"]
+        I["Talk recorded, uploaded UNLISTED<br/>without metadata"] --> J["Maintainer enters YouTube link + speaker"]:::action
+        J --> K["Talk data from past.md / content.md;<br/>About (and missing arXiv) from the calendar"]:::action
+        K --> L["Title + description in the channel format"]:::action
+        L --> CP3{"Preview as on YouTube; edit if needed"}:::gate
+        CP3 --> M["Save metadata (still unlisted)"]:::action
+        M --> CP4{"Everything correct?"}:::gate
+        CP4 --> N["Make public"]:::done
+        CP4 --> O["Optional PR: [Teams] → [YouTube] link in past.md"]:::done
     end
-
-    subgraph Phase3["Phase 3: Video Ingestion & Intelligent Editing"]
-        Q["Raw Teams Recording (.mp4)<br/>(Local / OneDrive Ingestion)"]:::default --> R["Speech Analysis (Whisper ASR):<br/>Host Prompt Cue & 'Thank You' Cut"]:::action
-        Q --> S["Computer Vision Layout Detection:<br/>Dynamic Slides, Speaker & Participants"]:::action
-        R --> T["Audio/Video Trimming (FFmpeg)"]:::action
-        S --> U["Dynamic Cropping, Rescaling & Blurring"]:::action
-        T & U --> V["Edited Video Preview"]:::default
-    end
-
-    subgraph Phase4["Phase 4: Two-Stage YouTube Release & Sync"]
-        V --> CP3{"Checkpoint 3 (Local Review Gate):<br/>Approve Cuts & Layout?<br/>(Optional timestamp overrides)"}:::gate
-        CP3 -- "Approved" --> W["Upload to YouTube as UNLISTED"]:::action
-        W --> X["Format Strict Description<br/>(<=100 char title check, pipe separator,<br/>Bold title, Abstract, arXiv, About, Host, No tags)"]:::default
-        X --> Y["Assign to Playlist (e.g. 2026)"]:::action
-        Y --> CP4{"Checkpoint 4 (YouTube Staging Gate):<br/>Verify Unlisted URL"}:::gate
-        CP4 -- "Sign-off" --> Z["Switch YouTube Video to PUBLIC"]:::action
-        Z --> AA["Update past.md with YouTube URL"]:::action
-        AA --> AB["Log to contribute.md:<br/>{Reviewer} & Quantum Bot"]:::action
-        AB --> AC["Regenerate feed.xml (New Video)<br/>& Git Push"]:::terminal
-    end
-
-    P --> Q
 ```
 
-</details>
+---
+
+## 3. Functional Requirements
+
+### FR-1: Calendar Event Format (maintainers' input)
+* **FR-1.1 (Summary):** `[{EventType}] {Speaker Name} ({mode note})`, e.g. `[Quantum Seminar] Daochen Wang (presented online)`.
+* **FR-1.2 (Description):** the Teams link line, then the talk title in bold, then the abstract (one or more paragraphs; an `Abstract.` label is optional), then labelled lines:
+  * `arXiv.` link (optional)
+  * `About.` speaker homepage or Scholar link (optional; needed by Tool 2)
+  * `Venue.` text, e.g. `Meeting Room, CQST, Vindhya (3rd level), IIIT Hyderabad`, or `Online-only`
+  * `Affiliation.` and `Photo.` (optional; otherwise entered in Tool 1)
+* **FR-1.3 (Raw bookings):** events whose description is still the raw Cal.com text (`What:` / `Need to reschedule or cancel?`) are reported as *not curated* and never published.
+
+### FR-2: Tool 1, Calendar → Website
+* **FR-2.1 (Trigger):** the maintainer runs it from the web app once the calendar is up to date. It is not scheduled.
+* **FR-2.2 (Repository check):**
+  * Show the latest commit on upstream `main`.
+  * Show whether the maintainer's fork `main` is behind upstream, with a **Sync fork** action.
+  * Warn about PRs from these tools that are still open, so the same talk isn't added twice.
+  * Without a fork, a maintainer who can push upstream gets PR branches on upstream instead.
+* **FR-2.3 (Is the event on the webpage?):** for every calendar event that has not ended, find a talk in `content.md` or `past.md` with the same speaker (or title) on the same date. Report each event as one of:
+  * *On website*
+  * *Missing*
+  * *Date differs*: the same speaker within 60 days, a likely reschedule. This is reported only; fix it by hand.
+  * *Not curated*
+  * *Cancelled*
+* **FR-2.4 (Entry generation):** each *Missing* event becomes a block in the existing `content.md` layout:
+  * Heading: `### [{EventType}] {Speaker}—[{Title}]({arXiv}) ({mode note})`
+  * Photo, abstract, clear div
+  * Table: Event | Speaker | Affiliation | Venue | Date | Time | Link
+    * Date is `Wednesday, November 4, 2026`.
+    * Time is `11:00am – 12:30pm`, in IST.
+    * Link is the Teams link.
+* **FR-2.5 (Section routing):** if the talk starts before the end of next week (Sunday 23:59:59 IST), the block goes under `## Upcoming`; otherwise under `## Pipeline`. Blocks are inserted in date order. The maintainer can override the section. Markers (`<!-- Upcoming event details go below -->`, the line break before Pipeline, `<!-- SKIP_START -->`) and every other block are left untouched.
+* **FR-2.6 (Affiliation):** not in the calendar, so the maintainer enters it. It is pre-filled from the speaker's previous talk, or from an `Affiliation.` line.
+* **FR-2.7 (Photo → GitHub link):**
+  * The maintainer picks an image in the web interface.
+  * It is resized to 280 px wide (2× the 140 px display width).
+  * It is committed to the **`speaker-photos`** branch: of upstream if the maintainer can push there, otherwise of their fork. It is never committed to `main`.
+  * The `raw.githubusercontent.com/{repo}/speaker-photos/photos/{file}` URL goes into `<img align="left" width="140" alt="image" src="…" />`.
+  * A returning speaker's previous photo is offered automatically. A URL can also be pasted.
+  * *Change from v1.5:* `gh image` / `github.com/user-attachments/…` links have no public API, so Apps Script cannot create them.
+* **FR-2.8 (Review, Checkpoint 1):** each entry is shown as editable markdown next to a rendered preview. The maintainer:
+  * chooses which entries to include
+  * confirms that the calendar is up to date and the branch is current.
+
+  The PR button stays disabled until then, and while the fork is behind.
+* **FR-2.9 (Commit & PR):**
+  1. Create a branch `calendar-sync-{yyyyMMdd-HHmmss}` from upstream `main`.
+  2. Commit `content.md` on it.
+  3. Open a PR to `main` with a summary of the added talks.
+
+  This is the API equivalent of `git add`, `git commit` and opening a PR. It refuses if `main` moved after the page was loaded, or if a selected talk is already on the site. The tool never pushes to `main`; a maintainer merges the PR.
+* **FR-2.10 (Activity log):** every step (reads, uploads, branch, commit, PR link) is shown in the web interface.
+
+### FR-3: Tool 2, YouTube Metadata
+* **FR-3.1 (Inputs):** a YouTube link (`youtu.be/…`, `watch?v=…`, `/live/…` or a YouTube Studio link) and the speaker name. The name field suggests speakers from the website. The video is assumed to be already uploaded as **unlisted**, without metadata.
+* **FR-3.2 (Speaker data):**
+  * From the website metadata (`past.md`, then `content.md`, on `main`): event type, speaker, title, abstract, arXiv. If the speaker has several talks, the most recent past one is used and the maintainer can pick another.
+  * From the calendar event on the talk's date: `About.`, and the arXiv link when the website has none. The tool shows which source each field came from.
+* **FR-3.3 (Title):**
+  * Format: `[{EventType}] {Speaker Name} | {Talk Title}`.
+  * Titles must be at most 100 characters. A longer title gets up to three shorter suggestions (main title before a colon, event type without "Quantum", or a truncated title), and the maintainer can type their own.
+* **FR-3.4 (Description):** use the format already used on the channel. YouTube renders `*text*` as bold.
+  ```
+  *{Talk Title}*
+
+  *Abstract.* {Abstract Text}
+
+  *arXiv.* {Paper / Preprint Link}
+
+  *About.* {Speaker Homepage or Google Scholar Link}
+
+  *Host.* IIIT Hyderabad
+  ```
+  * *Change from v1.5:* the title is in single asterisks, and the labels have no colon, to match published videos.
+  * The `arXiv.` and `About.` lines are left out, with a warning, when there is no link.
+  * The description must be at most 5000 bytes.
+  * `<` and `>` are replaced with `＜` and `＞`, because YouTube rejects them.
+  * **No tags.**
+* **FR-3.5 (Preview, Checkpoint 2):** an editable title and description are shown next to a YouTube-style preview: the embedded player, title, channel, privacy badge, and the rendered description. The current metadata on YouTube is shown for comparison.
+* **FR-3.6 (Save):** update only the video's title, description and tags (snippet). The privacy setting stays as it is (unlisted).
+* **FR-3.7 (Publish, Checkpoint 3):** **Make public**, after a confirmation prompt. This can also be done in YouTube Studio.
+* **FR-3.8 (Website link, optional):** a PR (branch `youtube-link-…`) replaces the talk's `[Teams](…)` link in `past.md` (or `content.md`) with `[YouTube](https://youtu.be/{videoId})`. It changes only that line.
 
 ---
 
-## 3. Detailed Functional Requirements
+## 4. Human-in-the-Loop Checkpoints
 
-### FR-1: Speaker Intake & Google Form Ingestion
-* **FR-1.1 (Google Form Intake):** Ingest responses from the Google Form:
-  * Talk Title
-  * arXiv / Paper URL
-  * Abstract (raw text)
-  * About Page (Speaker homepage, Google Scholar, or institution profile URL)
-  * Scheduled Date & Time Slot
-  * Mode: Online-only vs. Offline/Hybrid
-* **FR-1.2 (Venue Resolution):**
-  * If **Online-only**: Venue recorded as `Online-only` (or `presented online`); Teams meeting link attached.
-  * If **Offline / Hybrid**: Prompt maintainer to confirm on-campus venue. Default fallback: `"Meeting Room, CQST, Vindhya (3rd level), IIIT Hyderabad"`.
-* **FR-1.3 (Checkpoint 1 - Calendar Gate):**
-  * Present formatted calendar event (Summary, Date/Time, Venue, Description with Teams link and abstract) to maintainer for verification.
-  * Upon confirmation, create the entry on Google Calendar (*Quantum Meets | IIIT*).
-
-### FR-2: Photo Scraping, Face Crop & Automated GitHub CDN Upload
-* **FR-2.1 (Automated Photo Scraping):**
-  * Crawl the speaker's "About" page to detect candidate portrait images (filtering by image dimensions, OpenGraph `og:image`, `img` tags matching profile/bio patterns).
-* **FR-2.2 (Face Detection & Cropping):**
-  * Detect the speaker's face using computer vision (OpenCV Haar Cascade / MediaPipe Face Detection).
-  * Crop with proportional margin around the head and shoulders, producing a normalized portrait for the site (target display width: 140px).
-* **FR-2.3 (Fallback Mechanism):**
-  * If no photo is found or face detection confidence is low: ping the maintainer with a prompt to provide an image path/URL.
-  * System applies the face cropping algorithm to the submitted image.
-* **FR-2.4 (Automated GitHub CDN Hosting via `gh-image`):**
-  * **Zero local attachments policy:** Images must **not** be stored in an `attachments/` folder in the repository to prevent git bloat.
-  * System uploads the cropped face image using the GitHub CLI extension:
-    ```bash
-    gh image <path/to/cropped_face.png> --repo <owner/repo>
-    ```
-  * Extracts the generated markdown CDN link:
-    `![image](https://github.com/user-attachments/assets/{uuid})`
-  * Embeds the extracted URL into the site's standardized `<img>` tag:
-    `<img align="left" width="140" alt="image" src="https://github.com/user-attachments/assets/{uuid}" />`
-* **FR-2.5 (Abstract Markdown Formatter & Checkpoint 2 - Website Gate):**
-  * Parse raw text abstract from the Google Form into GitHub-Flavored Markdown:
-    * Standardize math notation (preserve KaTeX / LaTeX math `$..$` and `\(..\)`).
-    * Format academic citations (e.g., `[LG17]`, `[HEC25]`).
-    * Normalize paragraph breaks.
-  * Present full markdown block (heading, image, abstract, metadata table) for maintainer sign-off before committing to `content.md`.
-
-### FR-3: Section Routing (`Upcoming` vs. `Pipeline`) & Promotion
-* **FR-3.1 (Section Routing Rule - Ceil of Next Week):**
-  * Calculate the target event date relative to the current week:
-    * **Within the Ceil of the Next Week:** If the event occurs between the current date and the end of the next calendar week (Sunday 23:59:59 IST), insert directly under `## Upcoming` in `content.md`.
-    * **Beyond the Ceil of the Next Week:** If the event is scheduled beyond next week, insert under `## Pipeline` in `content.md`.
-* **FR-3.2 (Sunday Noon Promotion Schedule):**
-  * **Crucial Timing:** Pipeline-to-Upcoming promotion must run by **Sunday 12:00 PM (Noon) IST**.
-  * **Rationale:** By Sunday End-of-Day (EOD), the Google Apps Script email automation scrapes `content.md` and sends weekly announcement emails to the `quantum-seminars` and `quantum-meets` mailing lists.
-  * As a talk enters the upcoming week's horizon, automatically migrate its markdown block from `## Pipeline` up to `## Upcoming`.
-  * Trigger RSS feed update (`feed.xml`) whenever talks are promoted.
-  * Maintain formatting integrity: preserve line breaks before `## Pipeline` and email boundary markers (`<!-- SKIP_START -->` / `<!-- SKIP_END -->`).
-
-### FR-4: Event Lifecycle States (Reschedules & Cancellations)
-* **FR-4.1 (Rescheduled State):**
-  * Update date/time and venue.
-  * Adjust section placement (`Upcoming` vs `Pipeline`) based on the new date.
-  * Add note `(rescheduled to [New Date])` or `(being rescheduled)`.
-  * Update RSS feed with rescheduled status.
-* **FR-4.2 (Cancelled - Dead State):**
-  * Format heading: `### ~~[{EventType}] {Speaker}—[{Title}]({Link})~~ [CANCELLED]`.
-  * Remains on `content.md` until the scheduled date elapses.
-  * Automatically moves to `past.md` after the date passes.
-  * **Strict Exclusion:** Never enters the video editing or YouTube publishing pipeline.
-
-### FR-5: Video Ingestion & Intelligent Editing
-* **FR-5.1 (Teams UI Spatial Processing):**
-  * Dynamic bounding box tracking:
-    1. Slides area ($B_{slides}$)
-    2. Speaker camera ($B_{speaker}$)
-    3. Participant gallery ($B_{participants}$)
-  * Canvas composition:
-    * Expand $B_{slides}$ to fill the left canvas completely.
-    * Anchor $B_{speaker}$ at the top-right column.
-    * Heavily blur the remaining participant column below the speaker for privacy.
-* **FR-5.2 (Temporal Audio Trimming):**
-  * **Intro Cut:** Whisper ASR spots host handoff prompt (*"you can introduce yourself and begin"*, *"welcome"*, etc.) + speaker onset.
-  * **Outro Cut:** Whisper ASR spots speaker saying *"Thank you"* / closing remarks.
-  * **Hard Cut:** Immediately end video; exclude all post-talk Q&A and audience interaction.
-* **FR-5.3 (Checkpoint 3 - Local Review Gate):**
-  * Render lightweight preview.
-  * Ping reviewer; support `--set-start MM:SS`, `--set-end MM:SS`, and layout tuning.
-  * Video is uploaded to YouTube **only after human approval**.
-
-### FR-6: YouTube Publication, Metadata & Post-Publish Sync
-* **FR-6.1 (Strict YouTube Metadata):**
-  * **Title:** `[{EventType}] {Speaker Name} | {Talk Title}`
-  * **$\le 100$ Char Title Check:** If length $>100$, propose 2-3 shortened candidates + prompt for custom title input.
-  * **Description Template (Exact Standard):**
-    ```markdown
-    **{Talk Title}**
-
-    *Abstract.* {Abstract Text}
-
-    *arXiv.*: {Paper / Preprint Link}
-
-    *About.*: {Speaker Homepage or Google Scholar Link}
-
-    *Host.* IIIT Hyderabad
-    ```
-  * **Tags:** Strictly **NO TAGS** (empty tag list).
-* **FR-6.2 (Staging & Checkpoint 4 - YouTube Staging Gate):**
-  * Upload as **`unlisted`**.
-  * Add to playlist (e.g. `Quantum Seminars 2026`).
-  * Reviewer verifies unlisted video link on YouTube.
-  * On sign-off, switch status to **`public`**.
-* **FR-6.3 (Repository Reconciliation & RSS):**
-  * In `past.md`, replace placeholder `[Teams](...)` link with `[YouTube](https://youtu.be/{videoId})`.
-  * In `contribute.md`, log entry: `| {Speaker Name} | {Reviewer Name} & Quantum Bot | {Event Date} |`.
-  * **Regenerate RSS Feed (`feed.xml`)**: Add the newly published talk with its YouTube URL.
-  * Commit and push all updates to `main`.
-
-### FR-7: RSS Feed Architecture & Producer Specifications
-* **FR-7.1 (Dual Syndication):**
-  * **Upcoming Talks Channel:** Broadcasts newly scheduled talks with Title, Speaker, Date/Time, Abstract, and Teams meeting link.
-  * **Published Recordings Channel:** Broadcasts finalized YouTube recording links as soon as they are published.
-* **FR-7.2 (Stable GUID & Publication Dates):**
-  * Assign deterministic `<guid isPermaLink="false">` based on speaker and date (e.g. `quantum-meets-2026-11-04-daochen-wang`) so RSS reader apps never trigger duplicate alerts on subsequent markdown edits.
-  * `<pubDate>` formatted per RFC-822 standard.
-* **FR-7.3 (Auto-Discovery in HTML):**
-  * Ensure `<link rel="alternate" type="application/rss+xml" title="Quantum Meets RSS Feed" href="https://quantum-iiit.github.io/feed.xml">` is embedded in `index.html`.
-  * Surface an `[[RSS]]` link in `content.md` header alongside Google Calendar and mailing lists.
-
----
-
-## 4. Human-in-the-Loop Checkpoints Summary
-
-| Checkpoint | Trigger Point | Actions Available to Maintainer |
+| Checkpoint | Where | Maintainer action |
 | :--- | :--- | :--- |
-| **Checkpoint 1: Calendar Gate** | Post Google Form submission | Inspect event details & time slot; confirm venue (online vs campus default); approve Google Calendar entry. |
-| **Checkpoint 2: Website Gate** | Photo scraped & face cropped, abstract converted | Inspect cropped face; verify `gh image` CDN URL; review converted Markdown abstract and Upcoming vs. Pipeline placement; approve commit to `content.md`. |
-| **Checkpoint 3: Local Video Gate** | Video render complete | Review video preview; adjust `--start-time` or `--end-time`; approve for YouTube upload. |
-| **Checkpoint 4: YouTube Staging Gate** | Unlisted upload complete | Review unlisted YouTube video and description; sign off to make public and sync website. |
+| **1: Website gate** | Tool 1, before the PR | Sync the fork if it is behind. Fill in affiliation and photo. Review the markdown and preview. Confirm the calendar and branch are current. |
+| **PR review** | GitHub | Review and merge the PR. |
+| **2: YouTube preview** | Tool 2, before saving | Check or edit the title and description against the preview. |
+| **3: Publish** | Tool 2, after saving | Make the video public. Optionally open the `past.md` link PR. |
 
 ---
 
-## 5. Non-Functional Requirements (NFR)
+## 5. Non-Functional Requirements
 
-* **NFR-1 (Privacy):** 100% masking/blurring of non-speaker attendees in Teams recordings.
-* **NFR-2 (Clean Assets):** No repository bloat; zero image files committed to `attachments/` folder. All images hosted through `gh image` CDN (`user-attachments`).
-* **NFR-3 (Execution Independence):** CLI runs locally with optional containerization; credentials kept in `.env`.
-* **NFR-4 (Idempotence & Safety):** Each checkpoint saves state to `.quantum_cache/`, allowing the pipeline to pause, resume, or rerun without duplicate calendar entries or git conflicts.
+* **NFR-1 (Platform):** the tools are a Google Apps Script web app that executes *as the user accessing it*:
+  * Calendar access is read-only (Calendar advanced service).
+  * YouTube calls run as the maintainer's own Google account, which must manage the channel (YouTube Data API advanced service).
+  * GitHub is reached through its REST API.
+* **NFR-2 (Credentials):** each maintainer's GitHub token (classic, `public_repo` scope) is stored in their own Apps Script user properties. It is never committed and never shared between maintainers.
+* **NFR-3 (Clean assets):** no image files on `main`. Photos live on the `speaker-photos` branch.
+* **NFR-4 (Safety & idempotence):**
+  * The tools never push to `main`; every change is a PR.
+  * Running a tool again doesn't duplicate entries, because it checks against the website and against open tool PRs.
+  * PRs are refused when `main` changed since the data was read.
+  * Calendar data is only read.
+* **NFR-5 (Formatting integrity):** generated blocks match the existing `content.md` layout byte for byte, because the weekly announcement email script scrapes it. Only insertions are made.
+* **NFR-6 (Testability):** parsing and rendering are plain JavaScript and tested with Node against the real `content.md` and `past.md` (`node --test automation/apps-script/test/*.test.js`).
+
+---
+
+## 6. Changes from v1.5
+
+1. Scope is reduced to two tools (Calendar → Website, YouTube metadata). Everything else is deferred (§1).
+2. The Google Calendar replaces the Google Form as the source of talk details. Maintainers curate the event (FR-1).
+3. The implementation is a Google Apps Script web app instead of a local CLI. `.env` and `.quantum_cache/` are no longer used.
+4. Git operations are done through the GitHub API (branch → commit → PR), after an explicit check that the branch is up to date.
+5. Photos are uploaded in the web interface and hosted on a `speaker-photos` branch. This replaces `gh image` and the `user-attachments` CDN, which have no API.
+6. YouTube: the tool adds metadata to an already-uploaded unlisted video and does not upload it. The description format now matches the published videos (FR-3.4). Speaker data comes from the website, plus `About.` from the calendar.

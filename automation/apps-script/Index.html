@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+  <style>
+    :root { --fg:#1f2328; --muted:#59636e; --line:#d1d9e0; --bg:#f6f8fa; --card:#fff; --accent:#0969da;
+      --ok:#1a7f37; --okbg:#dafbe1; --warn:#9a6700; --warnbg:#fff8c5; --bad:#cf222e; --badbg:#ffebe9; }
+    * { box-sizing: border-box; }
+    body { margin:0; font:14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color:var(--fg); background:var(--bg); }
+    header { background:#24292f; color:#fff; padding:12px 20px; display:flex; gap:24px; align-items:center; flex-wrap:wrap; }
+    header h1 { font-size:16px; margin:0; }
+    nav button { background:none; border:0; color:#c9d1d9; padding:6px 10px; border-radius:6px; cursor:pointer; font:inherit; }
+    nav button.active { background:#ffffff22; color:#fff; }
+    main { max-width:1200px; margin:0 auto; padding:20px 16px 60px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:16px; margin-bottom:16px; }
+    .card h2 { font-size:15px; margin:0 0 12px; }
+    .muted { color:var(--muted); }
+    .pill { display:inline-block; padding:1px 8px; border-radius:999px; font-size:12px; font-weight:600; white-space:nowrap; }
+    .ok { background:var(--okbg); color:var(--ok); } .warn { background:var(--warnbg); color:var(--warn); }
+    .bad { background:var(--badbg); color:var(--bad); } .info { background:#ddf4ff; color:var(--accent); }
+    button.btn { background:var(--accent); color:#fff; border:0; border-radius:6px; padding:7px 14px; font:inherit; font-weight:600; cursor:pointer; }
+    button.btn.secondary { background:#fff; color:var(--fg); border:1px solid var(--line); }
+    button.btn:disabled { opacity:.5; cursor:not-allowed; }
+    input[type=text], input[type=password], input[type=url], select, textarea { font:inherit; padding:6px 8px; border:1px solid var(--line); border-radius:6px; width:100%; background:#fff; }
+    textarea { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12.5px; }
+    label.field { display:block; margin-bottom:10px; } label.field > span { display:block; font-weight:600; margin-bottom:3px; }
+    table { border-collapse:collapse; width:100%; } th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; } @media (max-width: 800px) { .grid2 { grid-template-columns:1fr; } }
+    .entry { border:1px solid var(--line); border-radius:8px; padding:14px; margin-bottom:14px; }
+    .rendered { border:1px solid var(--line); border-radius:6px; padding:12px; max-height:520px; overflow:auto; }
+    .rendered img { max-width:140px; margin:0 12px 8px 0; } .rendered table { font-size:12px; } .rendered h3 { font-size:15px; margin-top:0; }
+    .photo { display:flex; gap:10px; align-items:flex-start; } .photo img { width:70px; border-radius:6px; border:1px solid var(--line); }
+    .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .warnings { margin:8px 0; padding-left:18px; color:var(--warn); }
+    #log { font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; max-height:220px; overflow:auto; white-space:pre-wrap; }
+    #log .err { color:var(--bad); } #log .done { color:var(--ok); }
+    .yt-player { position:relative; padding-top:56.25%; background:#000; border-radius:10px; overflow:hidden; }
+    .yt-player iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+    .yt-title { font-size:18px; font-weight:700; margin:10px 0 4px; }
+    .yt-desc { background:#f2f2f2; border-radius:10px; padding:12px; white-space:pre-wrap; font-size:13.5px; margin-top:8px; }
+    .yt-desc a { color:#065fd4; }
+    .chips button { margin:4px 4px 0 0; }
+    .hidden { display:none !important; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Quantum Meets tools</h1>
+  <nav>
+    <button data-tab="website" class="active">Calendar → Website</button>
+    <button data-tab="youtube">YouTube metadata</button>
+    <button data-tab="settings">Settings</button>
+  </nav>
+</header>
+
+<main>
+  <!-- ================================================================ Calendar → Website -->
+  <section id="tab-website">
+    <div class="card">
+      <h2>1. Repository</h2>
+      <div id="repo" class="muted">Loading…</div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn secondary" id="reload">Re-check calendar &amp; website</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>2. Calendar vs. website</h2>
+      <div id="events" class="muted">Loading…</div>
+    </div>
+
+    <div class="card" id="entries-card">
+      <h2>3. New entries for content.md</h2>
+      <div id="entries" class="muted">Nothing to add yet.</div>
+      <div id="pr-box" class="hidden">
+        <label class="row" style="margin:8px 0 12px"><input type="checkbox" id="confirm">
+          <span>The calendar is up to date, the branch above is current, and I've reviewed the entries.</span></label>
+        <button class="btn" id="create-pr" disabled>Commit &amp; open pull request</button>
+        <div id="pr-result" style="margin-top:10px"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ YouTube -->
+  <section id="tab-youtube" class="hidden">
+    <div class="card">
+      <h2>Recording</h2>
+      <div class="grid2">
+        <label class="field"><span>YouTube link</span><input type="url" id="yt-url" placeholder="https://youtu.be/… or a YouTube Studio link"></label>
+        <label class="field"><span>Speaker</span><input type="text" id="yt-speaker" list="speakers" placeholder="Name as on the website"></label>
+      </div>
+      <datalist id="speakers"></datalist>
+      <button class="btn" id="yt-fetch">Fetch details</button>
+    </div>
+
+    <div id="yt-result" class="hidden">
+      <div class="card">
+        <h2>Talk on the website</h2>
+        <div id="yt-talk"></div>
+        <ul id="yt-warnings" class="warnings"></ul>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h2>Edit</h2>
+          <label class="field"><span>Title <span id="yt-title-count" class="muted"></span></span>
+            <input type="text" id="yt-title"></label>
+          <div id="yt-title-options" class="chips"></div>
+          <label class="field" style="margin-top:10px"><span>Description <span id="yt-desc-count" class="muted"></span></span>
+            <textarea id="yt-desc" rows="18"></textarea></label>
+          <div class="row">
+            <button class="btn" id="yt-save">Save to YouTube</button>
+            <button class="btn secondary" id="yt-reset">Reset to generated</button>
+          </div>
+          <p class="muted" style="margin-bottom:0">Saving changes only the title and description (and removes tags). The video stays <b id="yt-privacy-note"></b>.</p>
+        </div>
+
+        <div class="card">
+          <h2>Preview</h2>
+          <div class="yt-player"><iframe id="yt-embed" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+          <div class="yt-title" id="yt-prev-title"></div>
+          <div class="row muted"><span id="yt-channel"></span><span id="yt-privacy" class="pill"></span></div>
+          <div class="yt-desc" id="yt-prev-desc"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Publish</h2>
+        <div class="row">
+          <button class="btn" id="yt-public">Make public</button>
+          <button class="btn secondary" id="yt-pr">Open PR: YouTube link on the website</button>
+        </div>
+        <div id="yt-pr-result" style="margin-top:10px"></div>
+        <details style="margin-top:12px"><summary>Currently on YouTube</summary>
+          <p><b id="yt-cur-title"></b></p><div class="yt-desc" id="yt-cur-desc"></div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ Settings -->
+  <section id="tab-settings" class="hidden">
+    <div class="card">
+      <h2>GitHub</h2>
+      <p id="settings-status" class="muted"></p>
+      <label class="field"><span>Personal access token</span>
+        <input type="password" id="token" placeholder="Leave blank to keep the saved token"></label>
+      <p class="muted">A classic token with the <code>public_repo</code> scope
+        (<a href="https://github.com/settings/tokens/new?scopes=public_repo&description=Quantum%20Meets%20tools" target="_blank">create one</a>).
+        It is stored in your own Apps Script user properties; other maintainers can't see it.</p>
+      <label class="field"><span>Fork (optional)</span>
+        <input type="text" id="fork" placeholder="owner/quantum-iiit.github.io — default: your-login/quantum-iiit.github.io"></label>
+      <button class="btn" id="save-settings">Save</button>
+    </div>
+  </section>
+
+  <div class="card"><h2>Activity</h2><div id="log"></div></div>
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const call = (fn, ...args) => new Promise((resolve, reject) =>
+  google.script.run.withSuccessHandler(resolve).withFailureHandler(reject)[fn](...args));
+
+function log(msg, cls) {
+  const line = document.createElement('div');
+  line.className = cls || '';
+  line.textContent = new Date().toLocaleTimeString() + '  ' + msg;
+  $('#log').prepend(line);
+}
+async function step(msg, fn) {
+  log(msg + '…');
+  try {
+    const out = await fn();
+    (out && out.log || []).forEach(l => log('  ' + l));
+    return out;
+  } catch (e) {
+    log('✗ ' + (e.message || e), 'err');
+    throw e;
+  }
+}
+function renderMarkdown(md) {
+  return window.marked ? marked.parse(md) : '<pre>' + esc(md) + '</pre>';
+}
+
+// ---------------------------------------------------------------- tabs & settings
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => showTab(b.dataset.tab));
+function showTab(name) {
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  ['website', 'youtube', 'settings'].forEach(t => $('#tab-' + t).classList.toggle('hidden', t !== name));
+  if (name === 'youtube' && !$('#speakers').children.length) {
+    call('listSpeakers').then(list => { $('#speakers').innerHTML = list.map(s => '<option value="' + esc(s) + '">').join(''); });
+  }
+}
+
+function showSettings(s) {
+  $('#settings-status').innerHTML = s.hasToken
+    ? (s.login ? 'Connected to GitHub as <b>' + esc(s.login) + '</b>.' : '<span class="pill bad">Token problem</span> ' + esc(s.error))
+    : 'No GitHub token saved yet. The website tool needs one to read the repository and open pull requests.';
+  $('#fork').value = s.forkRepo || '';
+}
+$('#save-settings').onclick = async () => {
+  const s = await step('Saving settings', () => call('saveSettings', $('#token').value, $('#fork').value));
+  $('#token').value = '';
+  showSettings(s);
+  log('Settings saved' + (s.login ? ' (GitHub: ' + s.login + ')' : ''), 'done');
+  loadWebsite();
+};
+
+// ---------------------------------------------------------------- Calendar → Website
+let site = null;       // last loadWebsiteState() result
+let entries = {};      // event id -> {ev, section, affiliation, photoUrl, markdown, edited, include}
+
+$('#reload').onclick = () => loadWebsite();
+$('#confirm').onchange = updatePrButton;
+
+async function loadWebsite() {
+  $('#repo').textContent = 'Loading…';
+  $('#events').textContent = 'Loading…';
+  try {
+    site = await step('Checking the repository and reading the calendar', () => call('loadWebsiteState'));
+  } catch (e) {
+    $('#repo').innerHTML = '<span class="pill bad">Error</span> ' + esc(e.message || e);
+    $('#events').textContent = '';
+    return;
+  }
+  renderRepo(site.repo);
+  renderEvents();
+  renderEntries();
+}
+
+function renderRepo(r) {
+  let status;
+  if (!r.workRepo) status = '<span class="pill bad">No fork</span> Fork ' + esc(r.upstream) + ' on GitHub first.';
+  else if (!r.isFork) status = '<span class="pill ok">Up to date</span> PR branches are created on ' + esc(r.upstream) + ' from the latest main.';
+  else if (r.behindBy > 0) status = '<span class="pill warn">' + r.behindBy + ' commit(s) behind</span> Your fork ' + esc(r.workRepo) +
+    ' is behind ' + esc(r.upstream) + '. <button class="btn secondary" id="sync">Sync fork</button>';
+  else status = '<span class="pill ok">Up to date</span> Your fork ' + esc(r.workRepo) + ' has everything from ' + esc(r.upstream) + ' main.' +
+    (r.aheadBy ? ' <span class="muted">(It also has ' + r.aheadBy + ' extra commit(s); PR branches start from upstream main, so they are not included.)</span>' : '');
+  const prs = r.openPrs.length
+    ? '<p><span class="pill warn">Open PRs from these tools</span> Merge or close them first so entries are not added twice:<br>' +
+      r.openPrs.map(p => '<a href="' + esc(p.url) + '" target="_blank">#' + p.number + ' ' + esc(p.title) + '</a>').join('<br>') + '</p>'
+    : '';
+  $('#repo').innerHTML =
+    '<p style="margin-top:0">Website (<b>' + esc(r.upstream) + '</b> main): <a href="' + esc(r.head.url) + '" target="_blank"><code>' +
+    r.head.sha.slice(0, 7) + '</code></a> ' + esc(r.head.message) + ' <span class="muted">· ' + new Date(r.head.date).toLocaleString() + '</span></p>' +
+    '<p>' + status + '</p>' + prs;
+  const sync = $('#sync');
+  if (sync) sync.onclick = async () => {
+    const res = await step('Syncing fork with upstream', () => call('syncFork'));
+    log(res.message || 'Fork synced', 'done');
+    site.repo = res.status;
+    renderRepo(site.repo);
+    updatePrButton();
+  };
+}
+
+const STATUS = {
+  listed: ['ok', 'On website'], missing: ['bad', 'Missing'], moved: ['warn', 'Date differs'],
+  raw: ['info', 'Not curated'], cancelled: ['info', 'Cancelled'],
+};
+function renderEvents() {
+  if (!site.events.length) { $('#events').textContent = 'No upcoming events in the calendar.'; return; }
+  $('#events').innerHTML = '<p class="muted" style="margin-top:0">Talks up to ' + new Date(site.ceiling).toDateString() +
+    ' (end of next week) go under <b>Upcoming</b>, later ones under <b>Pipeline</b>.</p><table><tr><th>When (IST)</th><th>Calendar event</th><th>Status</th></tr>' +
+    site.events.map(r => '<tr><td>' + esc(r.date) + '</td><td><a href="' + esc(r.ev.htmlLink) + '" target="_blank">' + esc(r.ev.summary) +
+      '</a></td><td><span class="pill ' + STATUS[r.status][0] + '">' + STATUS[r.status][1] + '</span> <span class="muted">' + esc(r.detail) +
+      '</span></td></tr>').join('') + '</table>';
+}
+
+function renderEntries() {
+  const missing = site.events.filter(r => r.status === 'missing');
+  entries = {};
+  if (!missing.length) {
+    $('#entries').innerHTML = '<span class="pill ok">Nothing to add</span> Every curated upcoming event is on the website.';
+    $('#pr-box').classList.add('hidden');
+    return;
+  }
+  $('#entries').innerHTML = '';
+  missing.forEach(r => {
+    const e = entries[r.ev.id] = { ev: r.ev, section: r.section, affiliation: r.affiliation || '', photoUrl: r.photoUrl || '',
+      markdown: r.markdown, edited: false, include: true };
+    const div = document.createElement('div');
+    div.className = 'entry';
+    div.innerHTML =
+      '<div class="row" style="justify-content:space-between"><label class="row"><input type="checkbox" class="inc" checked> <b>' + esc(r.ev.summary) +
+      '</b></label><span class="muted">' + esc(r.date) + '</span></div>' +
+      (r.warnings.length ? '<ul class="warnings">' + r.warnings.map(w => '<li>' + esc(w) + ' — fix it in the calendar, or edit the markdown.</li>').join('') + '</ul>' : '') +
+      '<div class="grid2" style="margin-top:10px"><div>' +
+        '<label class="field"><span>Section</span><select class="sec"><option>Upcoming</option><option>Pipeline</option></select></label>' +
+        '<label class="field"><span>Affiliation</span><input type="text" class="aff" placeholder="Not in the calendar — e.g. UBC, Canada"></label>' +
+        '<div class="field"><span style="font-weight:600">Speaker photo</span><div class="photo"><img class="ph" alt="">' +
+          '<div style="flex:1"><input type="file" accept="image/*" class="file"><div class="muted" style="margin:4px 0">or paste an image URL:</div>' +
+          '<input type="url" class="url" placeholder="https://…"></div></div></div>' +
+        '<label class="field"><span>Markdown <a href="#" class="regen muted" style="font-weight:400">(regenerate)</a></span><textarea class="md" rows="14"></textarea></label>' +
+      '</div><div><span style="font-weight:600">How it will look</span><div class="rendered"></div></div></div>';
+    $('#entries').appendChild(div);
+    const q = s => div.querySelector(s);
+    q('.sec').value = e.section;
+    q('.aff').value = e.affiliation;
+    q('.url').value = e.photoUrl;
+    const paint = () => {
+      q('.md').value = e.markdown;
+      q('.rendered').innerHTML = renderMarkdown(e.markdown);
+      q('.ph').src = e.photoUrl || '';
+      q('.ph').classList.toggle('hidden', !e.photoUrl);
+    };
+    const regenerate = async () => {
+      if (e.edited) {
+        e.markdown = setImage(setAffiliation(e.markdown, e.affiliation), e.photoUrl);
+      } else {
+        e.markdown = await call('previewBlock', e.ev, { affiliation: e.affiliation, photoUrl: e.photoUrl });
+      }
+      paint();
+    };
+    q('.inc').onchange = () => { e.include = q('.inc').checked; updatePrButton(); };
+    q('.sec').onchange = () => { e.section = q('.sec').value; };
+    q('.aff').onchange = () => { e.affiliation = q('.aff').value.trim(); regenerate(); };
+    q('.url').onchange = () => { e.photoUrl = q('.url').value.trim(); regenerate(); };
+    q('.md').oninput = () => { e.markdown = q('.md').value; e.edited = true; q('.rendered').innerHTML = renderMarkdown(e.markdown); };
+    q('.regen').onclick = ev => { ev.preventDefault(); e.edited = false; regenerate(); };
+    q('.file').onchange = async () => {
+      const file = q('.file').files[0];
+      if (!file) return;
+      const data = await shrink(file, 280);
+      const res = await step('Uploading photo for ' + e.ev.speaker + ' (' + Math.round(data.length * 0.75 / 1024) + ' KB)',
+        () => call('uploadPhoto', data, 'image/jpeg', e.ev.speaker));
+      log('Photo stored in ' + res.repo + ' (' + res.path + '): ' + res.url, 'done');
+      e.photoUrl = res.url;
+      q('.url').value = res.url;
+      regenerate();
+    };
+    paint();
+  });
+  $('#pr-box').classList.remove('hidden');
+  updatePrButton();
+}
+
+/** Resize an image to at most `width` px wide (2× the 140px display width) and return JPEG base64. */
+function shrink(file, width) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, width / img.width);
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * scale);
+      c.height = Math.round(img.height * scale);
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, c.width, c.height);
+      ctx.drawImage(img, 0, 0, c.width, c.height);
+      resolve(c.toDataURL('image/jpeg', 0.9).split(',')[1]);
+    };
+    img.onerror = () => reject(new Error('Could not read that image'));
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+// Keep hand-edited markdown in sync when only the photo / affiliation changes.
+function setImage(md, url) {
+  const tag = url ? '<img align="left" width="140" alt="image" src="' + url + '" /> ' : '<!-- No image: upload a photo in the tool -->';
+  return md.replace(/<img align="left"[^>]*\/>\s?|<!-- No image[^>]*-->/, tag);
+}
+function setAffiliation(md, aff) {
+  return md.replace(/^(\|[^|\n]*\|[^|\n]*\|)[^|\n]*(\|.*\| *)$/gm, (all, a, b) =>
+    /^\| Event \|/.test(all) || /^\|-/.test(all) ? all : a + ' ' + aff + ' ' + b);
+}
+
+function updatePrButton() {
+  const any = Object.values(entries).some(e => e.include);
+  const r = site && site.repo;
+  const repoOk = r && r.workRepo && !(r.isFork && r.behindBy > 0);
+  $('#create-pr').disabled = !(any && repoOk && $('#confirm').checked);
+  $('#create-pr').title = !repoOk ? 'Sync your fork first' : !any ? 'Select at least one entry' : '';
+}
+
+$('#create-pr').onclick = async () => {
+  const items = Object.values(entries).filter(e => e.include).map(e => ({ ev: e.ev, section: e.section, markdown: e.markdown }));
+  $('#create-pr').disabled = true;
+  try {
+    const pr = await step('Committing content.md and opening a pull request', () => call('createWebsitePr', items, site.repo.head.sha));
+    log('Pull request #' + pr.number + ' is ready for review', 'done');
+    $('#pr-result').innerHTML = '<span class="pill ok">Done</span> <a href="' + esc(pr.url) + '" target="_blank">Pull request #' + pr.number +
+      '</a> is open. A maintainer can review and merge it on GitHub.';
+    $('#confirm').checked = false;
+  } catch (e) {
+    $('#pr-result').innerHTML = '<span class="pill bad">Failed</span> ' + esc(e.message || e);
+    updatePrButton();
+  }
+};
+
+// ---------------------------------------------------------------- YouTube
+let yt = null; // last prepareVideo() result
+
+$('#yt-fetch').onclick = () => fetchVideo();
+async function fetchVideo(talkKey) {
+  const url = $('#yt-url').value.trim(), speaker = $('#yt-speaker').value.trim();
+  if (!url || !speaker) { log('Enter the YouTube link and the speaker name', 'err'); return; }
+  yt = await step('Reading the video and finding ' + speaker + "'s talk on the website", () => call('prepareVideo', url, speaker, talkKey || ''));
+  log('Proposed title and description ready — review them on the right', 'done');
+  $('#yt-result').classList.remove('hidden');
+  const t = yt.talk;
+  $('#yt-talk').innerHTML =
+    (yt.otherTalks.length > 1
+      ? '<label class="field"><span>Talk</span><select id="yt-talk-pick">' + yt.otherTalks.map(o =>
+          '<option value="' + esc(o.key) + '"' + (o.key === t.key ? ' selected' : '') + '>' + esc(o.label) + '</option>').join('') + '</select></label>'
+      : '') +
+    '<p style="margin-top:0"><code>' + esc(t.heading) + '</code></p>' +
+    '<p class="muted">Title &amp; abstract from <b>' + esc(yt.sources.title) + '</b> (' + esc(t.date) + ') · arXiv: <b>' + esc(yt.sources.arxiv || 'none') +
+    '</b> · About: <b>' + esc(yt.sources.about || 'none') + '</b> · Host: IIIT Hyderabad</p>';
+  const pick = $('#yt-talk-pick');
+  if (pick) pick.onchange = () => fetchVideo(pick.value);
+  $('#yt-warnings').innerHTML = yt.warnings.map(w => '<li>' + esc(w) + '</li>').join('');
+  $('#yt-title').value = yt.proposed.title;
+  $('#yt-desc').value = yt.proposed.description;
+  $('#yt-title-options').innerHTML = yt.titleOptions.length
+    ? '<span class="muted">Shorter options: </span>' + yt.titleOptions.map(o => '<button class="btn secondary">' + esc(o) + '</button>').join('')
+    : '';
+  $('#yt-title-options').querySelectorAll('button').forEach(b => b.onclick = () => { $('#yt-title').value = b.textContent; paintVideo(); });
+  $('#yt-embed').src = 'https://www.youtube.com/embed/' + yt.videoId;
+  $('#yt-pr').disabled = t.hasThisVideo || !/\[Teams\]/.test(t.linkCell);
+  $('#yt-pr').title = t.hasThisVideo ? 'The website already links this video' : '';
+  $('#yt-pr-result').innerHTML = t.hasThisVideo ? '<span class="pill ok">Linked</span> The website already links this video.' : '';
+  paintVideo();
+}
+
+function paintVideo() {
+  const title = $('#yt-title').value, desc = $('#yt-desc').value;
+  const bytes = new TextEncoder().encode(desc).length;
+  $('#yt-title-count').innerHTML = '(' + title.length + '/100)' + (title.length > 100 ? ' <span class="pill bad">too long</span>' : '');
+  $('#yt-desc-count').innerHTML = '(' + bytes + '/5000 bytes)' + (bytes > 5000 ? ' <span class="pill bad">too long</span>' : '') +
+    (/[<>]/.test(title + desc) ? ' <span class="pill bad">remove &lt; and &gt;</span>' : '');
+  $('#yt-prev-title').textContent = title;
+  $('#yt-prev-desc').innerHTML = youtubeRender(desc);
+  $('#yt-channel').textContent = yt.current.channelTitle;
+  $('#yt-privacy').textContent = yt.current.privacy;
+  $('#yt-privacy').className = 'pill ' + (yt.current.privacy === 'public' ? 'ok' : 'warn');
+  $('#yt-privacy-note').textContent = yt.current.privacy;
+  $('#yt-public').disabled = yt.current.privacy === 'public';
+  $('#yt-cur-title').textContent = yt.current.title;
+  $('#yt-cur-desc').innerHTML = youtubeRender(yt.current.description || '(empty)');
+  const unchanged = title === yt.current.title && desc === yt.current.description;
+  $('#yt-save').textContent = unchanged ? 'Saved on YouTube ✓' : 'Save to YouTube';
+}
+$('#yt-title').oninput = paintVideo;
+$('#yt-desc').oninput = paintVideo;
+$('#yt-reset').onclick = () => { $('#yt-title').value = yt.proposed.title; $('#yt-desc').value = yt.proposed.description; paintVideo(); };
+
+/** Roughly how YouTube shows a description: *bold*, clickable links, line breaks kept. */
+function youtubeRender(text) {
+  return esc(text)
+    .replace(/(^|[\s(])\*([^*\n]+?)\*(?=[\s).,:;]|$)/gm, '$1<b>$2</b>')
+    .replace(/https?:\/\/[^\s<]+/g, u => '<a href="' + u + '" target="_blank">' + u + '</a>');
+}
+
+$('#yt-save').onclick = async () => {
+  yt.current = await step('Saving title and description to YouTube', () =>
+    call('saveVideoMetadata', yt.videoId, $('#yt-title').value, $('#yt-desc').value));
+  log('YouTube updated: "' + yt.current.title + '" (still ' + yt.current.privacy + ')', 'done');
+  paintVideo();
+};
+$('#yt-public').onclick = async () => {
+  if (!confirm('Make "' + yt.current.title + '" public on YouTube?')) return;
+  yt.current = await step('Making the video public', () => call('setVideoPrivacy', yt.videoId, 'public'));
+  log('The video is now ' + yt.current.privacy, 'done');
+  paintVideo();
+};
+$('#yt-pr').onclick = async () => {
+  $('#yt-pr').disabled = true;
+  try {
+    const pr = await step('Opening a PR that links https://youtu.be/' + yt.videoId + ' on the website', () =>
+      call('createVideoLinkPr', yt.videoId, yt.talk.key));
+    $('#yt-pr-result').innerHTML = '<span class="pill ok">Done</span> <a href="' + esc(pr.url) + '" target="_blank">Pull request #' + pr.number + '</a> is open.';
+    log('Pull request #' + pr.number + ' is ready for review', 'done');
+  } catch (e) {
+    $('#yt-pr-result').innerHTML = '<span class="pill bad">Failed</span> ' + esc(e.message || e);
+    $('#yt-pr').disabled = false;
+  }
+};
+
+// ---------------------------------------------------------------- start
+call('getSettings').then(s => {
+  showSettings(s);
+  if (!s.hasToken) {
+    log('Add a GitHub token in Settings to use the website tool');
+    $('#repo').innerHTML = '<span class="pill warn">Setup</span> Add your GitHub token in <a href="#" id="go-settings">Settings</a>.';
+    $('#events').textContent = '';
+    $('#go-settings').onclick = e => { e.preventDefault(); showTab('settings'); };
+  } else {
+    loadWebsite();
+  }
+}).catch(e => log('✗ ' + (e.message || e), 'err'));
+</script>
+</body>
+</html>

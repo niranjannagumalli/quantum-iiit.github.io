@@ -35,30 +35,6 @@ Use our [Teams link to join us online](https://teams.microsoft.com/l/meetup-join
 <!-- Upcoming event details go below  -->
 
 
-### [Quantum Seminar] Sounak Kar—[Requirements for Teleportation in an Intercity Quantum Network](https://arxiv.org/abs/2602.04869) (presented online)
-
-<img align="left" width="140" alt="image" src="https://github.com/user-attachments/assets/5b69e1b2-e555-449f-9a9d-f424a7c270dc" /> 
-
-<!-- <img width="242" height="328" alt="image" src="https://github.com/user-attachments/assets/b5154ea1-bd43-4329-8255-62ab9b2c7fbc" />
- -->
-<!-- <img width="1921" height="1931" alt="image" src="https://github.com/user-attachments/assets/a67f73cf-02ca-467a-8cd8-5b0a7717f43c" />
-
- -->
-
-We investigate the hardware requirements for quantum teleportation in an intercity-scale network topology consisting of two metropolitan-scale networks connected via a long-distance backbone link. Specifically, we identify the minimal improvements required beyond the state-of-the-art to achieve an end-to-end expected teleportation fidelity of 2/3, which represents the classical limit. To this end, we formulate the hardware requirements computation as optimisation problems, where the hardware parameters representing the underlying device capabilities serve as decision variables. Assuming a simplified noise model, we derive closed-form analytical expressions for the teleportation fidelity and rate when the network is realised using heterogeneous quantum hardware, including a quantum repeater chain with a memory cut-off. Our derivations are based on events defined by the order statistics of link generation durations in both the metropolitan networks and the backbone, and the resulting expressions are validated through simulations on the NetSquid platform. The analytical expressions facilitate efficient exploration of the optimisation parameter space without resorting to computationally intensive simulations. We then apply this framework to a representative realisation in which the metropolitan nodes are based on trapped-ion processors and the backbone is composed of ensemble-based quantum memories. Our results suggest that teleportation across metropolitan distances is already achievable with state-of-the-art hardware when the data qubit is prepared after end-to-end entanglement has already been established, whereas extending teleportation to intercity scales requires additional, though plausibly achievable, improvements in hardware performance.
-
-<div style="clear: both;"></div>
-<br/>
-<br/>
-
-
-
-| Event | Speaker | Affiliation | Venue | Date | Time | Link |
-|-|-|-|-|-|-|-|
-| Seminar | Sounak Kar | QuTech, TU Delft | Meeting Room, CQST, Vindhya (3rd level), IIIT Hyderabad | Wednesday, November 25, 2026 | 3:30 – 5:00pm |  [Teams](https://teams.microsoft.com/l/meetup-join/19%3ameeting_MTIwYzA1N2UtZTk4OC00MmUyLTgzNTEtOGVlNjIyMjVkZGY0%40thread.v2/0?context=%7b%22Tid%22%3a%22031a3bbc-cf7c-4e2b-96ec-867555540a1c%22%2c%22Oid%22%3a%227a4a124e-e79f-4645-a13d-e0c802a8b77b%22%7d) | 
-
-
-
 <!-- Don't remove this line break before Pipeline; messes up the email formatting in the weekly announcement emails -->
 <br/>
 
